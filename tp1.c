@@ -55,16 +55,16 @@ int main() {
 	ptrIndice = &indice;
 	
 	int opcion;
-	puts("................................................................................");
-	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
-	puts("  ##########  .     ######    .   ###     ##    .               .             .");
-	puts("  ##          .       ##      .   ## #    ##    .               .             .");
-	puts("  ##          .       ##      .   ##  #   ##    .               .             .");
-	puts("  ##          .       ##      .   ##   #  ##    .               .             .");
-	puts("  ##          .       ##      .   ##    # ##    .               .             .");
-	puts("  ##########  .     ######    .   ##     ###    .               .             .");
-	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
-	puts("................................................................................");
+	puts(".................................................................................");
+	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+	puts("  #########   .   ######    .   ###     ##  .  ###########  .  ###     ###  .  ");
+	puts("  ##          .     ##      .   ## #    ##  .  ##       ##  .  ## #   # ##  .  ");
+	puts("  ##          .     ##      .   ##  #   ##  .  ##       ##  .  ##  # #  ##  .  ");
+	puts("  ##          .     ##      .   ##   #  ##  .  ## ##### ##  .  ##   #   ##  .  ");
+	puts("  ##          .     ##      .   ##    # ##  .  ##       ##  .  ##       ##  .  ");
+	puts("  #########   .   ######    .   ##     ###  .  ##       ##  .  ##       ##  .  ");
+	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+	puts(".................................................................................");
 	printf("Seleccione la operacion a realizar:\n\t1. Gestion de Peliculas\n\t2. Renovar Cartelera\n\t3. Gestion de Salas\n\t4. Salir del sistema\n-> ");
 	scanf("%d",&opcion);
 	switch (opcion) {
@@ -114,7 +114,7 @@ void altaManual(peliculas *pp, int *indice) {
 		do {
 			getchar(); /* consume el \n */
 			printf("Ingrese el nombre de la pelicula: ");
-			fgets(pp[*indice].nombre,MAXNOMBRE+1,stdin);
+			fgets(pp[*indice].nombre,MAXNOMBRE,stdin);
 			printf("\nIngrese el anyo de la pelicula: ");
 			scanf("%d",&pp[*indice].anyo);
 			printf("\nIngrese el genero:\n\tA-a: Accion\n\tC-c: Comedia\n\tD-d: Drama\n\tS-s: Suspenso\n\tT-t: Terror\n\t:");
@@ -151,7 +151,7 @@ void altaMasiva(peliculas *pp, int *indice) {
 	else {
 		for (i = *indice; i < MAXPELI; i++) {
 			for(j = 0; j < MAXNOMBRE; j++){
-				/* Genera caracteres aleatorios a-z */
+				/* Genera 50 caracteres aleatorios a-z */
 				ch = 'a' + rand() % (('z'-'a') + 1);
 				pp[*indice].nombre[j] = ch;
 			}
@@ -175,7 +175,7 @@ void altaMasiva(peliculas *pp, int *indice) {
 }
 
 void bajaPeli(peliculas *pp, int *indice) {
-	int i;
+	int i, pos;
 	char nombrePeli[MAXNOMBRE];
 	
 	if(*indice == 0) {
@@ -189,9 +189,11 @@ void bajaPeli(peliculas *pp, int *indice) {
 		fgets(nombrePeli,MAXNOMBRE,stdin);
 		
 		for (i = 0; i < *indice; i++) {
-			strstr(pp[i].nombre, nombrePeli);
+			if((strstr(pp[i].nombre, nombrePeli)) != NULL);
+				
 		}
 	}
+	gestionPeliculas(pp, indice);
 }
 
 void modificarPeli(peliculas *pp, int *indice) {
