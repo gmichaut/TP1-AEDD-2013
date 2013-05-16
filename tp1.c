@@ -46,16 +46,25 @@ int main() {
 	peliculas *ptrPeli;
 	ptrPeli = Peli;
 	
-	/* Espacio almacenamiento */
+	/* Reserva espacio almacenamiento */
 	ptrPeli = malloc(sizeof(Peli));
 	
-	/* Indice actual pelicula cargada */
+	/* Indice cantidad peliculas cargadas */
 	int indice = 0;
 	int *ptrIndice;
 	ptrIndice = &indice;
 	
 	int opcion;
-	
+	puts("................................................................................");
+	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+	puts("  ##########  .     ######    .   ###     ##    .               .             .");
+	puts("  ##          .       ##      .   ## #    ##    .               .             .");
+	puts("  ##          .       ##      .   ##  #   ##    .               .             .");
+	puts("  ##          .       ##      .   ##   #  ##    .               .             .");
+	puts("  ##          .       ##      .   ##    # ##    .               .             .");
+	puts("  ##########  .     ######    .   ##     ###    .               .             .");
+	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+	puts("................................................................................");
 	printf("Seleccione la operacion a realizar:\n\t1. Gestion de Peliculas\n\t2. Renovar Cartelera\n\t3. Gestion de Salas\n\t4. Salir del sistema\n-> ");
 	scanf("%d",&opcion);
 	switch (opcion) {
@@ -141,7 +150,7 @@ void altaMasiva(peliculas *pp, int *indice) {
 		printf("\nNo se pueden cargar mas peliculas!\n");
 	else {
 		for (i = *indice; i < MAXPELI; i++) {
-			for(j = 0; j < MAXNOMBRE+1; j++){
+			for(j = 0; j < MAXNOMBRE; j++){
 				/* Genera caracteres aleatorios a-z */
 				ch = 'a' + rand() % (('z'-'a') + 1);
 				pp[*indice].nombre[j] = ch;
@@ -151,7 +160,9 @@ void altaMasiva(peliculas *pp, int *indice) {
 			/* Genera MCE */
 			pp[*indice].mce = random(MAXSALA+1);
 			/* Inicializa FAC en blanco */
-			pp[*indice].fac = 0;
+			pp[*indice].fac = 23112013;
+			/* Asigna el genero */
+			pp[*indice].genero = 'C';
 			
 			/* incremento el indice de peliculas */
 			*indice += 1;
@@ -164,7 +175,23 @@ void altaMasiva(peliculas *pp, int *indice) {
 }
 
 void bajaPeli(peliculas *pp, int *indice) {
+	int i;
+	char nombrePeli[MAXNOMBRE];
 	
+	if(*indice == 0) {
+		printf("\nNo hay peliculas cargadas.\n");
+		getchar();
+		gestionPeliculas(pp, indice);
+	}
+	else {
+		printf("\n\t\tIngrese el nombre de la pelicula a buscar: ");
+		getchar();
+		fgets(nombrePeli,MAXNOMBRE,stdin);
+		
+		for (i = 0; i < *indice; i++) {
+			strstr(pp[i].nombre, nombrePeli);
+		}
+	}
 }
 
 void modificarPeli(peliculas *pp, int *indice) {
@@ -173,11 +200,14 @@ void modificarPeli(peliculas *pp, int *indice) {
 
 void listado(peliculas *pp, int *indice) {
 	int i;
+	
 	system("clear");
-	printf("|NOMBRE\t\t\t|\tAÑO\t|GENERO|\tMCE\t|\tFAC\t|\tESTADO\t|\n");
-	for(i = 0; i < *indice; i++)
-		printf("%s\t%d\t%c\t%d\t%d\t%d",pp[i].nombre, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, pp[i].marcaBaja);
-	puts("\n");
+	printf("--+----------------------------------------------------+------+---+-----+----------+---+\n");
+	for(i = 0; i < *indice; i++) {
+		printf("%d.\t%s   %d   %c   %d   %d   %d\n",i+1, pp[i].nombre, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, pp[i].marcaBaja);
+		printf("--+----------------------------------------------------+------+---+-----+----------+---+\n");
+	}
+	printf("\n");
 	gestionPeliculas(pp, indice);
 }
 
