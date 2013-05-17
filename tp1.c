@@ -35,6 +35,7 @@ void bajaPeli(peliculas *pp, int *indice);
 void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
 int validarFecha(int *fecha);
+void bienvenida();
 
 enum genero {Accion, Comedia, Drama, Suspenso, Terror};
 
@@ -55,16 +56,7 @@ int main() {
 	ptrIndice = &indice;
 	
 	int opcion;
-	puts(".................................................................................");
-	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
-	puts("  #########   .   ######    .   ###     ##  .  ###########  .  ###     ###  .  ");
-	puts("  ##          .     ##      .   ## #    ##  .  ##       ##  .  ## #   # ##  .  ");
-	puts("  ##          .     ##      .   ##  #   ##  .  ##       ##  .  ##  # #  ##  .  ");
-	puts("  ##          .     ##      .   ##   #  ##  .  ## ##### ##  .  ##   #   ##  .  ");
-	puts("  ##          .     ##      .   ##    # ##  .  ##       ##  .  ##       ##  .  ");
-	puts("  #########   .   ######    .   ##     ###  .  ##       ##  .  ##       ##  .  ");
-	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
-	puts(".................................................................................");
+	bienvenida();
 	printf("Seleccione la operacion a realizar:\n\t1. Gestion de Peliculas\n\t2. Renovar Cartelera\n\t3. Gestion de Salas\n\t4. Salir del sistema\n-> ");
 	scanf("%d",&opcion);
 	switch (opcion) {
@@ -127,7 +119,7 @@ void altaManual(peliculas *pp, int *indice) {
 			scanf("%d",&pp[*indice].fac);
 			getchar();
 			pp[*indice].marcaBaja = 0;
-			printf("\n\nDatos cargados:\nNombre: %sAño: %d\nGenero: %c\nMCE: %d\nFAC: %d\nMarca Baja: %d",pp[*indice].nombre, pp[*indice].anyo, pp[*indice].genero, pp[*indice].mce, pp[*indice].fac, pp[*indice].marcaBaja);
+			printf("\n%s   %d   %c   %d   %d   %d\n",pp[*indice].nombre, pp[*indice].anyo, pp[*indice].genero, pp[*indice].mce, pp[*indice].fac, pp[*indice].marcaBaja);
 			/* Incrementa en 1 indice de peliculas cargadas */
 			*indice += 1;
 			printf("\n\nPelicula(s) cargadas: %d\n\n", *indice);
@@ -184,13 +176,13 @@ void bajaPeli(peliculas *pp, int *indice) {
 		gestionPeliculas(pp, indice);
 	}
 	else {
-		printf("\n\t\tIngrese el nombre de la pelicula a buscar: ");
+		printf("\n\tIngrese el nombre o parte del nombre de la pelicula a buscar: ");
 		getchar();
 		fgets(nombrePeli,MAXNOMBRE,stdin);
 		
 		for (i = 0; i < *indice; i++) {
-			if((strstr(pp[i].nombre, nombrePeli)) != NULL);
-				
+			if((strstr(pp[i].nombre, nombrePeli)) == NULL);
+				printf("%d.\t%s   %d   %c   %d   %d   %d\n",i+1, pp[i].nombre, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, pp[i].marcaBaja);
 		}
 	}
 	gestionPeliculas(pp, indice);
@@ -225,3 +217,15 @@ int validarFecha(int *fecha) {
 	return 0;
 }
 
+void bienvenida() {
+	puts(".........................................................................................................");
+	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+	puts("  #########   .   ######    .  ###     ##  .  ###########  .  ###     ###  .  ######### .  ###     ## .");
+	puts("  ##          .     ##      .  ## #    ##  .  ##       ##  .  ## #   # ##  .  #       # .  ## #    ## .");
+	puts("  ##          .     ##      .  ##  #   ##  .  ##       ##  .  ##  # #  ##  .  #       # .  ##  #   ## .");
+	puts("  ##          .     ##      .  ##   #  ##  .  ## ##### ##  .  ##   #   ##  .  #       # .  ##   #  ## .");
+	puts("  ##          .     ##      .  ##    # ##  .  ##       ##  .  ##       ##  .  #       # .  ##    # ## .");
+	puts("  #########   .   ######    .  ##     ###  .  ##       ##  .  ##       ##  .  ######### .  ##     ### .");
+	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+	puts(".........................................................................................................");
+}
