@@ -169,6 +169,7 @@ void altaMasiva(peliculas *pp, int *indice) {
 void bajaPeli(peliculas *pp, int *indice) {
 	int i, pos;
 	char nombrePeli[MAXNOMBRE];
+	char *ptr;
 	
 	if(*indice == 0) {
 		printf("\nNo hay peliculas cargadas.\n");
@@ -178,18 +179,41 @@ void bajaPeli(peliculas *pp, int *indice) {
 	else {
 		printf("\n\tIngrese el nombre o parte del nombre de la pelicula a buscar: ");
 		getchar();
-		fgets(nombrePeli,MAXNOMBRE,stdin);
+		
+		scanf("%s", nombrePeli);
 		
 		for (i = 0; i < *indice; i++) {
-			if((strstr(pp[i].nombre, nombrePeli)) == NULL);
-				printf("%d.\t%s   %d   %c   %d   %d   %d\n",i+1, pp[i].nombre, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, pp[i].marcaBaja);
+			ptr = strstr(pp[i].nombre, nombrePeli);
+			if(ptr != NULL);
+				printf("%d.\t%s   %d   %c   %d   %d   %d\n",i+1, ptr, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, pp[i].marcaBaja);
 		}
 	}
 	gestionPeliculas(pp, indice);
 }
 
 void modificarPeli(peliculas *pp, int *indice) {
-	
+	int i, pos;
+		char nombrePeli[MAXNOMBRE];
+		char *ptr;
+		
+		if(*indice == 0) {
+			printf("\nNo hay peliculas cargadas.\n");
+			getchar();
+			gestionPeliculas(pp, indice);
+		}
+		else {
+			printf("\n\tIngrese el nombre o parte del nombre de la pelicula a buscar: ");
+			getchar();
+			
+			scanf("%s", nombrePeli);
+			
+			for (i = 0; i < *indice; i++) {
+				ptr = strstr(pp[i].nombre, nombrePeli);
+				if(ptr != NULL);
+					printf("%d.\t%s   %d   %c   %d   %d   %d\n",i+1, ptr, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, pp[i].marcaBaja);
+			}
+		}
+		gestionPeliculas(pp, indice);
 }
 
 void listado(peliculas *pp, int *indice) {
