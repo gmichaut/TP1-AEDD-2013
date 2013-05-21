@@ -26,6 +26,7 @@ typedef struct Peliculas peliculas;
 
 /* Prototipo Funciones */
 int autenticar();
+int validarFecha(int *fecha);
 void gestionPeliculas(peliculas *pp, int *indice);
 void renovarCartelera();
 void gestionSalas();
@@ -34,7 +35,6 @@ void altaMasiva(peliculas *pp, int *indice);
 void bajaPeli(peliculas *pp, int *indice);
 void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
-int validarFecha(int *fecha);
 void bienvenida();
 
 enum genero {Accion, Comedia, Drama, Suspenso, Terror};
@@ -167,10 +167,11 @@ void altaMasiva(peliculas *pp, int *indice) {
 }
 
 void bajaPeli(peliculas *pp, int *indice) {
-	int i, pos;
+	int i, j, num, aux, bandera, pos[MAXPELI];
 	char nombrePeli[MAXNOMBRE];
 	char *ptr;
 	
+	/* Verifica que haya peliculas cargadas */
 	if(*indice == 0) {
 		printf("\nNo hay peliculas cargadas.\n");
 		getchar();
@@ -181,39 +182,139 @@ void bajaPeli(peliculas *pp, int *indice) {
 		getchar();
 		
 		scanf("%s", nombrePeli);
-		
-		for (i = 0; i < *indice; i++) {
+		i = j = 0;
+		while(i < *indice){
 			ptr = strstr(pp[i].nombre, nombrePeli);
-			if(ptr != NULL);
-				printf("%d.\t%s   %d   %c   %d   %d   %d\n",i+1, ptr, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, pp[i].marcaBaja);
+			if(ptr == NULL)
+				bandera = -1;
+			else {
+				printf("\n%d. %s ",j+1, pp[i].nombre);
+				printf("|| %d ", pp[i].anyo);
+				printf("|| %d ", pp[i].genero);
+				printf("|| %d ", pp[i].mce);
+				printf("|| %d ", pp[i].fac);
+				printf("|| %d\n", pp[i].marcaBaja);
+				printf("--------------------------------------------------------------------------------------------\n");
+				pos[j] = i;
+				j++;
+				bandera = 0;
+			}
+			i++;
 		}
 	}
+	/* Si no encuentra peliculas muestra msj y vuelve al menu anterior */
+	if(bandera == -1){
+		printf("\nNO SE ENCONTRO NINGUNA PELICULA\n\n");
+		modificarPeli(pp, indice);
+	}
+	else {
+		do {
+		printf("\nIngrese el num de pelicula a dar de baja: ");
+		scanf("%d",&num);
+		} while(num < 0 || num >= j+1);
+		
+		aux = pos[num-1];
+		pp[aux].marcaBaja = 1;
+	}
+	printf("\nSE HA DADO DE BAJA LA SIGUIENTE PELICULA:");
+printf("\n--------------------------------------------------------------------------------------------\n");
+	printf("\n%d. %s ",aux+1, pp[aux].nombre);
+	printf("|| %d ", pp[aux].anyo);
+	printf("|| %d ", pp[aux].genero);
+	printf("|| %d ", pp[aux].mce);
+	printf("|| %d ", pp[aux].fac);
+	printf("|| %d\n", pp[aux].marcaBaja);
+	printf("\n--------------------------------------------------------------------------------------------\n");
+	
 	gestionPeliculas(pp, indice);
 }
 
 void modificarPeli(peliculas *pp, int *indice) {
-	int i, pos;
-		char nombrePeli[MAXNOMBRE];
-		char *ptr;
-		
-		if(*indice == 0) {
-			printf("\nNo hay peliculas cargadas.\n");
-			getchar();
-			gestionPeliculas(pp, indice);
-		}
-		else {
-			printf("\n\tIngrese el nombre o parte del nombre de la pelicula a buscar: ");
-			getchar();
-			
-			scanf("%s", nombrePeli);
-			
-			for (i = 0; i < *indice; i++) {
-				ptr = strstr(pp[i].nombre, nombrePeli);
-				if(ptr != NULL);
-					printf("%d.\t%s   %d   %c   %d   %d   %d\n",i+1, ptr, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, pp[i].marcaBaja);
-			}
-		}
+	int i, j, num, aux, bandera, opcion, n_anyo, n_mce, pos[MAXPELI];
+	char n_genero, nombrePeli[MAXNOMBRE];
+	char *ptr;
+	
+	/* Verifica que haya peliculas cargadas */
+	if(*indice == 0) {
+		printf("\nNo hay peliculas cargadas.\n");
+		getchar();
 		gestionPeliculas(pp, indice);
+	}
+	else {
+		printf("\n\tIngrese el nombre o parte del nombre de la pelicula a buscar: ");
+		getchar();
+		
+		scanf("%s", nombrePeli);
+		i = j = 0;
+		while(i < *indice){
+			ptr = strstr(pp[i].nombre, nombrePeli);
+			/* Verifica que haya peliculas cargadas */
+			if(ptr == NULL)
+				bandera = -1;
+			else {
+				printf("\n%d. %s ",j+1, pp[i].nombre);
+				printf("|| %d ", pp[i].anyo);
+				printf("|| %c ", pp[i].genero);
+				printf("|| %d ", pp[i].mce);
+				printf("|| %d ", pp[i].fac);
+				printf("|| %d\n", pp[i].marcaBaja);
+				printf("--------------------------------------------------------------------------------------------\n");
+				pos[j] = i;
+				j++;
+				bandera = 0;
+			}
+			i++;
+		}
+	}
+	/* Si no encuentra peliculas muestra msj y vuelve al menu anterior */
+	if(bandera == -1){
+		printf("\nNO SE ENCONTRO NINGUNA PELICULA\n\n");
+		modificarPeli(pp, indice);
+	}
+	else {
+		do {
+		printf("\nIngrese el num de pelicula a modificar: ");
+		scanf("%d",&num);
+		} while(num < 0 || num >= j+1);
+		
+		/* Almacena la posicion de la pelicula de la estructura */
+		aux = pos[num-1];
+		
+		do {
+			printf("\nPELICULA: %s", pp[aux].nombre);
+			printf("\n\nSeleccione la modificacion a realizar:\n1. Año\n2. Genero\n3. MCE\n9. Volver al menu anterior\n-> ");
+			scanf("%d", &opcion);
+			switch (opcion) {
+				case 1: getchar();
+						printf("\nIngrese el nuevo año: ");
+						scanf("%d",&n_anyo);
+						pp[aux].anyo = n_anyo;
+					break;
+				case 2: getchar();
+						printf("\nIngrese el nuevo genero: ");
+						scanf("%c",&n_genero);
+						pp[aux].genero = n_genero;
+					break;
+				case 3: getchar();
+						printf("\nIngrese el nuevo MCE: ");
+						scanf("%d",&n_mce);
+						pp[aux].mce = n_mce;
+					break;
+			}
+		} while(opcion > 3 || opcion < 0);
+	}
+	
+		printf("\nSE HA MODIFICADO LA SIGUIENTE PELICULA:");
+printf("\n--------------------------------------------------------------------------------------------\n");
+	printf("\n%d. %s ",aux+1, pp[aux].nombre);
+	printf("|| %d ", pp[aux].anyo);
+	printf("|| %c ", pp[aux].genero);
+	printf("|| %d ", pp[aux].mce);
+	printf("|| %d ", pp[aux].fac);
+	printf("|| %d\n", pp[aux].marcaBaja);
+	printf("\n--------------------------------------------------------------------------------------------\n");
+	
+	gestionPeliculas(pp, indice);
 }
 
 void listado(peliculas *pp, int *indice) {
@@ -230,7 +331,7 @@ void listado(peliculas *pp, int *indice) {
 }
 
 void renovarCartelera() {
-	
+	/* Implementar vector en el cual las posiciones del tipo de pelicula se vayan eliminando a medida que se asignan a las salas */
 }
 
 void gestionSalas() {
