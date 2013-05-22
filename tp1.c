@@ -43,13 +43,11 @@ void altaMasiva(peliculas *pp, int *indice);
 void bajaPeli(peliculas *pp, int *indice);
 void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
-void renovarCartelera();
+void renovarCartelera(salas *pp);
 void gestionSalas();
 
-enum genero {Accion, Comedia, Drama, Suspenso, Terror};
-
 int main() {
-	/* Array de peliculas */
+	/* Array de estructuras */
 	peliculas Peli[MAXPELI];
 	salas Sala[3];
 	
@@ -76,7 +74,7 @@ int main() {
 	switch (opcion) {
 		case 1: gestionPeliculas(ptrPeli, ptrIndice);
 			break;
-		case 2: renovarCartelera();
+		case 2: renovarCartelera(ptrSala);
 			break;
 		case 3: gestionSalas();
 			break;
@@ -103,7 +101,7 @@ void gestionPeliculas(peliculas *pp, int *indice) {
 			break;
 		case 5: listado(pp, indice);
 			break;
-		case 9: printf("\nGracias por utilizar CINAMON");
+		case 9: main();
 			break;
 		default:
 			break;
@@ -147,8 +145,8 @@ void altaManual(peliculas *pp, int *indice) {
 }
 
 void altaMasiva(peliculas *pp, int *indice) {
-	int i, j;
-	char ch;
+	int i, j, dia, mes, anyo;
+	char ch, gen[] = {'A','C','D','S','T'};
 	
 	randomize;
 	
@@ -167,8 +165,8 @@ void altaMasiva(peliculas *pp, int *indice) {
 			pp[*indice].mce = random(MAXSALA+1);
 			/* Inicializa FAC en blanco */
 			pp[*indice].fac = 23112013;
-			/* Asigna el genero */
-			pp[*indice].genero = 'C';
+			/* Asigna el genero aleatorio */
+			pp[*indice].genero = gen[random(5)];
 			
 			/* incremento el indice de peliculas */
 			*indice += 1;
@@ -330,6 +328,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 						scanf("%d",&n_mce);
 						pp[aux].mce = n_mce;
 					break;
+				case 9: gestionPeliculas(pp, indice);
 			}
 		} while(opcion > 3 || opcion < 0);
 	}
@@ -360,7 +359,7 @@ void listado(peliculas *pp, int *indice) {
 	gestionPeliculas(pp, indice);
 }
 
-void renovarCartelera() {
+void renovarCartelera(salas *pp) {
 	/* Implementar vector en el cual las posiciones del tipo de pelicula se vayan eliminando a medida que se asignan a las salas */
 	
 }
