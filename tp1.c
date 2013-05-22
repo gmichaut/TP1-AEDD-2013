@@ -35,7 +35,7 @@ void altaMasiva(peliculas *pp, int *indice);
 void bajaPeli(peliculas *pp, int *indice);
 void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
-void bienvenida();
+void inicio();
 
 enum genero {Accion, Comedia, Drama, Suspenso, Terror};
 
@@ -56,7 +56,7 @@ int main() {
 	ptrIndice = &indice;
 	
 	int opcion;
-	bienvenida();
+	inicio();
 	printf("Seleccione la operacion a realizar:\n\t1. Gestion de Peliculas\n\t2. Renovar Cartelera\n\t3. Gestion de Salas\n\t4. Salir del sistema\n-> ");
 	scanf("%d",&opcion);
 	switch (opcion) {
@@ -168,7 +168,7 @@ void altaMasiva(peliculas *pp, int *indice) {
 
 void bajaPeli(peliculas *pp, int *indice) {
 	int i, j, num, aux, bandera, pos[MAXPELI];
-	char nombrePeli[MAXNOMBRE];
+	char opcion, nombrePeli[MAXNOMBRE];
 	char *ptr;
 	
 	/* Verifica que haya peliculas cargadas */
@@ -185,6 +185,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 		i = j = 0;
 		while(i < *indice){
 			ptr = strstr(pp[i].nombre, nombrePeli);
+			/* Verifica que la busqueda haya arrojado resultados */
 			if(ptr == NULL)
 				bandera = -1;
 			else {
@@ -194,7 +195,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 				printf("|| %d ", pp[i].mce);
 				printf("|| %d ", pp[i].fac);
 				printf("|| %d\n", pp[i].marcaBaja);
-				printf("--------------------------------------------------------------------------------------------\n");
+				printf("---------------------------------------------------------------------------------------------\n");
 				pos[j] = i;
 				j++;
 				bandera = 0;
@@ -207,26 +208,37 @@ void bajaPeli(peliculas *pp, int *indice) {
 		printf("---------------------------------------------------------------------------------------------\n");
 		printf("\n                               NO SE ENCONTRO NINGUNA PELICULA\n\n");
 		printf("---------------------------------------------------------------------------------------------\n");
-		modificarPeli(pp, indice);
+		bajaPeli(pp, indice);
 	}
 	else {
 		do {
 		printf("\nIngrese el num de pelicula a dar de baja: ");
 		scanf("%d",&num);
 		} while(num < 0 || num >= j+1);
+				
+		getchar();
+		printf("\nCONFIRMA LOS CAMBIOS? (S)i - (N)o: ");
+		scanf("%c",&opcion);
 		
-		aux = pos[num-1];
-		pp[aux].marcaBaja = 1;
+		if(opcion == 'S'){
+			aux = pos[num-1];
+			pp[aux].marcaBaja = 1;
+			printf("\nSE HA DADO DE BAJA LA SIGUIENTE PELICULA:");
+			printf("\n--------------------------------------------------------------------------------------------\n");
+			printf("\n%d. %s ",aux+1, pp[aux].nombre);
+			printf("|| %d ", pp[aux].anyo);
+			printf("|| %d ", pp[aux].genero);
+			printf("|| %d ", pp[aux].mce);
+			printf("|| %d ", pp[aux].fac);
+			printf("|| %d\n", pp[aux].marcaBaja);
+			printf("\n--------------------------------------------------------------------------------------------\n");
+		}
+		else if(opcion == 'N'){
+			printf("---------------------------------------------------------------------------------------------\n");
+			printf("\n                                     NO SE REALIZARON CAMBIOS\n\n");
+			printf("---------------------------------------------------------------------------------------------\n");
+		}
 	}
-	printf("\nSE HA DADO DE BAJA LA SIGUIENTE PELICULA:");
-printf("\n--------------------------------------------------------------------------------------------\n");
-	printf("\n%d. %s ",aux+1, pp[aux].nombre);
-	printf("|| %d ", pp[aux].anyo);
-	printf("|| %d ", pp[aux].genero);
-	printf("|| %d ", pp[aux].mce);
-	printf("|| %d ", pp[aux].fac);
-	printf("|| %d\n", pp[aux].marcaBaja);
-	printf("\n--------------------------------------------------------------------------------------------\n");
 	
 	gestionPeliculas(pp, indice);
 }
@@ -250,7 +262,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 		i = j = 0;
 		while(i < *indice){
 			ptr = strstr(pp[i].nombre, nombrePeli);
-			/* Verifica que haya peliculas cargadas */
+			/* Verifica que la busqueda haya arrojado resultados */
 			if(ptr == NULL)
 				bandera = -1;
 			else {
@@ -336,6 +348,7 @@ void listado(peliculas *pp, int *indice) {
 
 void renovarCartelera() {
 	/* Implementar vector en el cual las posiciones del tipo de pelicula se vayan eliminando a medida que se asignan a las salas */
+	
 }
 
 void gestionSalas() {
@@ -346,7 +359,7 @@ int validarFecha(int *fecha) {
 	return 0;
 }
 
-void bienvenida() {
+void inicio() {
 	puts(".........................................................................................................");
 	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
 	puts("  #########   .   ######    .  ###     ##  .  ###########  .  ###     ###  .  ######### .  ###     ## .");
