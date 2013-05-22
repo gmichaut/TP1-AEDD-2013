@@ -11,7 +11,7 @@
 #define MAXPELI 20
 #define MAXNOMBRE 50
 
-/* Estructuras */
+/* Estructura Peliculas */
 struct Peliculas {
 	char nombre[MAXNOMBRE];
 	int anyo;
@@ -21,34 +21,48 @@ struct Peliculas {
 	int marcaBaja;
 };
 
-/* Tipo de dato */
+/* Sinonimo tipo de dato */
 typedef struct Peliculas peliculas;
+
+/* Estructura Salas */
+struct Salas {
+	char nombreSala[20];
+	peliculas vigentes;
+};
+
+/* Sinonimo tipo de dato */
+typedef struct Salas salas;
 
 /* Prototipo Funciones */
 int autenticar();
 int validarFecha(int *fecha);
+void inicio();
 void gestionPeliculas(peliculas *pp, int *indice);
-void renovarCartelera();
-void gestionSalas();
 void altaManual(peliculas *pp, int *indice);
 void altaMasiva(peliculas *pp, int *indice);
 void bajaPeli(peliculas *pp, int *indice);
 void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
-void inicio();
+void renovarCartelera();
+void gestionSalas();
 
 enum genero {Accion, Comedia, Drama, Suspenso, Terror};
 
 int main() {
 	/* Array de peliculas */
 	peliculas Peli[MAXPELI];
+	salas Sala[3];
 	
 	/* Puntero a estructura */
 	peliculas *ptrPeli;
 	ptrPeli = Peli;
 	
+	salas *ptrSala;
+	ptrSala = Sala;
+	
 	/* Reserva espacio almacenamiento */
 	ptrPeli = malloc(sizeof(Peli));
+	ptrSala = malloc(sizeof(Sala));
 	
 	/* Indice cantidad peliculas cargadas */
 	int indice = 0;
