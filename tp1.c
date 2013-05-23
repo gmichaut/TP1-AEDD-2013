@@ -151,32 +151,47 @@ void altaManual(peliculas *pp, int *indice) {
 	
 	/* Verifica si se alcanzo el limite de peliculas */
 	if(*indice == MAXPELI){
+		system("clear");
+		inicio();
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		printf("\n                               NO SE PUEDEN CARGAR MAS PELICULAS\n\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
 	}
 	else {
 		do {
-			getchar(); /* consume el \n */
-			printf("Ingrese el nombre de la pelicula: ");
+			getchar();
+			fflush(stdin);
+			system("clear");
+			inicio();
+			printf("\n\nCARGAR PELICULA");
+			printf("\n---------------------------------------------------------------------------------------------------------\n");
+			printf("INGRESE EL NOMBRE DE LA PELICULA: ");
 			fgets(pp[*indice].nombre,MAXNOMBRE,stdin);
-			printf("\nIngrese el anyo de la pelicula: ");
+			printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("INGRESE EL AÑO DE ESTRENO: ");
 			scanf("%d",&pp[*indice].anyo);
-			printf("\nIngrese el genero:\n\tA-a: Accion\n\tC-c: Comedia\n\tD-d: Drama\n\tS-s: Suspenso\n\tT-t: Terror\n\t:");
+			printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("SELECCIONE EL GENERO (A)ccion - (C)omedia - (D)rama - (S)uspenso - (T)error : ");
 			getchar();
 			scanf("%c",&pp[*indice].genero);
-			printf("\nIngrese la cantidad de expectadores que se esperan: ");
+			printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("INGRESE CANTIDAD EXPECTADORES QUE SE ESPERAN: ");
 			getchar();
 			scanf("%d",&pp[*indice].mce);
-			printf("\nIngrese la fecha de asignacion en cartelera en formato ddmmaaaa: ");
+			printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("INGRESE FECHA ASIGNACION EN CARTELERA EN FORMATO DDMMAAAA: ");
 			scanf("%d",&pp[*indice].fac);
 			getchar();
 			pp[*indice].marcaBaja = 0;
-			printf("\n%s   %d   %c   %d   %d   %d\n",pp[*indice].nombre, pp[*indice].anyo, pp[*indice].genero, pp[*indice].mce, pp[*indice].fac, pp[*indice].marcaBaja);
+			
 			/* Incrementa en 1 indice de peliculas cargadas */
 			*indice += 1;
-			printf("\n\nPelicula(s) cargadas: %d\n\n", *indice);
-			printf("\nDesea cargar mas peliculas? (S)i - (N)o: ");
+			system("clear");
+			inicio();
+			printf("\n---------------------------------------------------------------------------------------------------------\n");
+			printf("\nCANTIDAD PELICULAS CARGADAS: %d\n\n", *indice);
+			printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("\nDESEA CARGAR MAS PELICULAS? (S)i - (N)o: ");
 			scanf("%c",&opcion);
 		} while (opcion == 's' || opcion == 'S');
 	}
@@ -244,11 +259,14 @@ void bajaPeli(peliculas *pp, int *indice) {
 		printf("---------------------------------------------------------------------------------------------------------\n");
 	}
 	else {
-		printf("\nIngrese el nombre o parte del nombre de la pelicula a buscar: ");
+
+		printf("\n---------------------------------------------------------------------------------------------------------\n");
+		printf("INGRESE EL NOMBRE O PARTE DEL NOMBRE A BUSCAR: ");
 		getchar();
 		
 		scanf("%s", nombrePeli);
 		i = j = 0;
+		
 		while(i < *indice){
 			ptr = strstr(pp[i].nombre, nombrePeli);
 			/* Verifica que la busqueda haya arrojado resultados */
@@ -275,7 +293,6 @@ void bajaPeli(peliculas *pp, int *indice) {
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			printf("\n                                     NO SE ENCONTRO NINGUNA PELICULA\n\n");
 			printf("---------------------------------------------------------------------------------------------------------\n");
-			bajaPeli(pp, indice);
 		}
 		else {
 			do {
@@ -362,7 +379,6 @@ void modificarPeli(peliculas *pp, int *indice) {
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			printf("\n                                     NO SE ENCONTRO NINGUNA PELICULA\n\n");
 			printf("---------------------------------------------------------------------------------------------------------\n");
-			modificarPeli(pp, indice);
 		}
 		else {
 			do {
@@ -399,7 +415,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 							} while(n_mce < 0 || n_mce > MAXSALA);
 							pp[aux].mce = n_mce;
 						break;
-					case 9: gestionPeliculas(pp, indice);
+					case 9: 
 						break;
 				}
 			} while(opcion > 3 || opcion < 0);
@@ -450,7 +466,7 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 	int i, j, k, h, genSala, indiceGen = 4;
 	char gen[] = {'A','C','D','S','T'};
 	
-	/* Inicializo las salas con su respectiva capacidad*/
+	/* Inicializo las salas con su respectivo nombre y capacidad*/
 	strcpy(ps[0].nombreSala, "Aleandro");
 	ps[0].capacidad = 1500;
 	strcpy(ps[1].nombreSala, "Zorrilla");
@@ -497,7 +513,8 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 				gen[k] = gen[k+1];
 			
 			/* Busca y asigna las peliculas a la sala de acuerdo al genero seleccionado */
-			
+			for(h = 0; h < *indice; h++)
+				;
 			
 			indiceGen--;
 		}
