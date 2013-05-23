@@ -462,19 +462,8 @@ void listado(peliculas *pp, int *indice) {
 }
 
 void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
-	/* Implementar vector en el cual las posiciones del tipo de pelicula se vayan eliminando a medida que se asignan a las salas */
-	int i, j, k, h, genSala, indiceGen = 4;
+	int i, j, k, h, n, genSala, indiceGen = 4;
 	char gen[] = {'A','C','D','S','T'};
-	
-	/* Inicializo las salas con su respectivo nombre y capacidad*/
-	strcpy(ps[0].nombreSala, "Aleandro");
-	ps[0].capacidad = 1500;
-	strcpy(ps[1].nombreSala, "Zorrilla");
-	ps[1].capacidad = 200;
-	strcpy(ps[2].nombreSala, "Nu");
-	ps[2].capacidad = 525;
-	strcpy(ps[3].nombreSala, "Eve");
-	ps[3].capacidad = 525;
 
 	/* Verifica que haya peliculas cargadas */
 	if(*indice == 0) {
@@ -487,9 +476,20 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 		
 	}
 	else {
-		getchar();
+		
+		/* Inicializo las salas con su respectivo nombre y capacidad*/
+		strcpy(ps[0].nombreSala, "Aleandro");
+		ps[0].capacidad = 1500;
+		strcpy(ps[1].nombreSala, "Zorrilla");
+		ps[1].capacidad = 200;
+		strcpy(ps[2].nombreSala, "Nu");
+		ps[2].capacidad = 525;
+		strcpy(ps[3].nombreSala, "Eve");
+		ps[3].capacidad = 525;
+		
 		for(i = 0; i < 4; i++){
 			fflush(stdin);
+			getchar();
 			system("clear");
 			inicio();
 			printf("\n---------------------------------------------------------------------------------------------------------\n");
@@ -506,15 +506,20 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 			
 			/* Asigna e imprime el genero seleccionado a la sala */
 			ps[i].generoSala = gen[genSala-1];
-			printf("\nGENERO SALA %s: %c", ps[i].nombreSala, ps[i].generoSala);
+			printf("\nGENERO SALA %s: %c\n", ps[i].nombreSala, ps[i].generoSala);
 			
 			/* Elimina de la lista de generos disponibles al genero seleccionado */
 			for(k = genSala-1; k <= indiceGen; k++)
 				gen[k] = gen[k+1];
 			
 			/* Busca y asigna las peliculas a la sala de acuerdo al genero seleccionado */
-			for(h = 0; h < *indice; h++)
-				;
+			for(h = 0, n = 0; h < *indice; h++){
+				if((pp[h].genero == ps[i].generoSala) && (pp[h].mce <= ps[i].capacidad)) {
+					strcpy(ps[i].enCartelera[n].nombre, pp[h].nombre);
+					printf("\n%s",ps[i].enCartelera[n].nombre);
+					n++;
+				}
+			}
 			
 			indiceGen--;
 		}
