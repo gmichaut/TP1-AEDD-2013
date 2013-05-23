@@ -28,7 +28,7 @@ typedef struct Peliculas peliculas;
 struct Salas {
 	char nombreSala[20];
 	char generoSala;
-	int mce;
+	int capacidad;
 	peliculas vigentes[10];
 };
 
@@ -249,23 +249,27 @@ void bajaPeli(peliculas *pp, int *indice) {
 		printf("\nCONFIRMA LOS CAMBIOS? (S)i - (N)o: ");
 		scanf("%c",&opcion);
 		
-		if(opcion == 'S'){
-			aux = pos[num-1];
-			pp[aux].marcaBaja = 1;
-			printf("\nSE HA DADO DE BAJA LA SIGUIENTE PELICULA:\n");
-			printf("---------------------------------------------------------------------------------------------------------\n");
-			printf("\n%d. %s ",aux+1, pp[aux].nombre);
-			printf("|| %d ", pp[aux].anyo);
-			printf("|| %c ", pp[aux].genero);
-			printf("|| %d ", pp[aux].mce);
-			printf("|| %d ", pp[aux].fac);
-			printf("|| %d\n", pp[aux].marcaBaja);
-			printf("---------------------------------------------------------------------------------------------------------\n");
-		}
-		else if(opcion == 'N'){
-			printf("---------------------------------------------------------------------------------------------------------\n");
-			printf("\n                                        NO SE REALIZARON CAMBIOS\n\n");
-			printf("---------------------------------------------------------------------------------------------------------\n");
+		switch (opcion) {
+			case 'S':
+			case 's':
+				aux = pos[num-1];
+				pp[aux].marcaBaja = 1;
+				printf("\nSE HA DADO DE BAJA LA SIGUIENTE PELICULA:\n");
+				printf("---------------------------------------------------------------------------------------------------------\n");
+				printf("\n%d. %s ",aux+1, pp[aux].nombre);
+				printf("|| %d ", pp[aux].anyo);
+				printf("|| %c ", pp[aux].genero);
+				printf("|| %d ", pp[aux].mce);
+				printf("|| %d ", pp[aux].fac);
+				printf("|| %d\n", pp[aux].marcaBaja);
+				printf("---------------------------------------------------------------------------------------------------------\n");
+				break;
+			case 'N':
+			case 'n':
+				printf("---------------------------------------------------------------------------------------------------------\n");
+				printf("\n                                        NO SE REALIZARON CAMBIOS\n\n");
+				printf("---------------------------------------------------------------------------------------------------------\n");
+				break;
 		}
 	}
 	
@@ -390,15 +394,15 @@ void renovarCartelera(salas *ps) {
 	int i, j, h, genSala, indiceGen = 4;
 	char gen[] = {'A','C','D','S','T'};
 	
-	/* Inicializo las salas */
+	/* Inicializo las salas con su respectiva capacidad*/
 	strcpy(ps[0].nombreSala, "Aleandro");
-	ps[0].mce = 1500;
+	ps[0].capacidad = 1500;
 	strcpy(ps[1].nombreSala, "Zorrilla");
-	ps[1].mce = 200;
+	ps[1].capacidad = 200;
 	strcpy(ps[2].nombreSala, "Nu");
-	ps[2].mce = 525;
+	ps[2].capacidad = 525;
 	strcpy(ps[3].nombreSala, "Eve");
-	ps[3].mce = 525;
+	ps[3].capacidad = 525;
 
 	for(i = 0; i < 4; i++){
 		getchar();
