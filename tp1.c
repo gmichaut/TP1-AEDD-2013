@@ -10,6 +10,7 @@
 #define MAXSALA 1500
 #define MAXPELI 20
 #define MAXNOMBRE 50
+#define ANYOACTUAL 2013
 
 /* Estructura Peliculas */
 struct Peliculas {
@@ -40,6 +41,7 @@ typedef struct Salas salas;
 /* Prototipo Funciones */
 int autenticar();
 int validarFecha(char *fecha);
+char generarFecha();
 void inicio();
 void gestionPeliculas(peliculas *pp, int *indice);
 void altaManual(peliculas *pp, int *indice);
@@ -48,7 +50,7 @@ void bajaPeli(peliculas *pp, int *indice);
 void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
 void renovarCartelera(salas *ps, peliculas *pp, int *indice);
-void gestionSalas(salas *ps);
+void gestionSalas(salas *ps, int *indice);
 
 int main() {
 	/* Array de estructuras */
@@ -85,7 +87,7 @@ int main() {
 				break;
 			case 2: renovarCartelera(ptrSala, ptrPeli, ptrIndice);
 				break;
-			case 3: gestionSalas(ptrSala);
+			case 3: gestionSalas(ptrSala, ptrIndice);
 				break;
 			case 4: 
 					system("clear");
@@ -149,6 +151,7 @@ void gestionPeliculas(peliculas *pp, int *indice) {
 }
 
 void altaManual(peliculas *pp, int *indice) {
+	struct tm fecha;
 	char opcion;
 	
 	/* Verifica si se alcanzo el limite de peliculas */
@@ -170,24 +173,32 @@ void altaManual(peliculas *pp, int *indice) {
 			printf("INGRESE EL NOMBRE DE LA PELICULA: ");
 			fgets(pp[*indice].nombre,MAXNOMBRE,stdin);
 			printf("---------------------------------------------------------------------------------------------------------\n");
-			printf("INGRESE EL AÑO DE ESTRENO: ");
-			scanf("%d",&pp[*indice].anyo);
+			do {
+				getchar();
+				printf("INGRESE EL AÑO DE ESTRENO: ");
+				scanf("%d",&pp[*indice].anyo);
+			} while((pp[*indice].anyo > ANYOACTUAL) || (pp[*indice].anyo < 1900));
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			printf("SELECCIONE EL GENERO (A)ccion - (C)omedia - (D)rama - (S)uspenso - (T)error : ");
 			getchar();
 			scanf("%c",&pp[*indice].genero);
 			printf("---------------------------------------------------------------------------------------------------------\n");
-			printf("INGRESE CANTIDAD EXPECTADORES QUE SE ESPERAN: ");
-			getchar();
-			scanf("%d",&pp[*indice].mce);
+			do {
+				printf("INGRESE LA CANTIDAD EXPECTADORES QUE SE ESPERAN: ");
+				getchar();
+				scanf("%d",&pp[*indice].mce);
+			} while((pp[*indice].mce > MAXSALA) || (pp[*indice].mce < 0));
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			printf("INGRESE FECHA ASIGNACION EN CARTELERA EN FORMATO DDMMAAAA: ");
 			scanf("%d",&pp[*indice].fac);
 			getchar();
+			
+			/* Pelicula se carga con estado "Vigente" */
 			pp[*indice].marcaBaja = 0;
 			
 			/* Incrementa en 1 indice de peliculas cargadas */
 			*indice += 1;
+			
 			system("clear");
 			inicio();
 			printf("\n---------------------------------------------------------------------------------------------------------\n");
@@ -203,7 +214,7 @@ void altaManual(peliculas *pp, int *indice) {
 }
 
 void altaMasiva(peliculas *pp, int *indice) {
-	int i, j, dia, mes, anyo;
+	int i, j;
 	char ch, gen[] = {'A','C','D','S','T'};
 	
 	randomize;
@@ -221,15 +232,20 @@ void altaMasiva(peliculas *pp, int *indice) {
 				pp[*indice].nombre[j] = ch;
 			}
 			/* Genera Años entre 1900 y 2013 */
-			pp[*indice].anyo = 1900 + (rand() % (int)(2013 - 1900 + 1));
+			pp[*indice].anyo = 1900 + (rand() % (int)(ANYOACTUAL - 1900 + 1));
+			
 			/* Genera MCE */
 			pp[*indice].mce = random(MAXSALA+1);
+			
 			/* Inicializa FAC en blanco */
 			pp[*indice].fac = 0;
+			
 			/* Asigna el genero aleatorio */
 			pp[*indice].genero = gen[random(5)];
+			
 			/* Se asigna marcaBaja en 0. significa que estan vigentes */
 			pp[*indice].marcaBaja = 0;
+			
 			/* incremento el indice de peliculas */
 			*indice += 1;
 		}
@@ -280,7 +296,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 				printf("|| %d ", pp[i].genero);
 				printf("|| %d ", pp[i].mce);
 				printf("|| %d ", pp[i].fac);
-				printf("|| %d\n", pp[i].marcaBaja);
+				printf("|| %s\n", ((pp[i].marcaBaja)?"Dada de baja" : "Vigente"));
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				pos[j] = i;
 				j++;
@@ -318,7 +334,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 					printf("|| %c ", pp[aux].genero);
 					printf("|| %d ", pp[aux].mce);
 					printf("|| %d ", pp[aux].fac);
-					printf("|| %d\n", pp[aux].marcaBaja);
+					printf("|| %s\n", ((pp[aux].marcaBaja)?"Dada de baja" : "Vigente"));
 					printf("---------------------------------------------------------------------------------------------------------\n");
 					break;
 				case 'N':
@@ -366,7 +382,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 				printf("|| %c ", pp[i].genero);
 				printf("|| %d ", pp[i].mce);
 				printf("|| %d ", pp[i].fac);
-				printf("|| %d\n", pp[i].marcaBaja);
+				printf("|| %s\n", ((pp[i].marcaBaja)?"Dada de baja" : "Vigente"));
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				pos[j] = i;
 				j++;
@@ -392,8 +408,14 @@ void modificarPeli(peliculas *pp, int *indice) {
 			aux = pos[num-1];
 			
 			do {
+				printf("\nPELICULA A MODIFICAR:\n");
 				printf("---------------------------------------------------------------------------------------------------------\n");
-				printf("\nPELICULA A MODIFICAR: %s\n\n", pp[aux].nombre);
+				printf("\n%s ", pp[aux].nombre);
+				printf("|| %d ", pp[aux].anyo);
+				printf("|| %c ", pp[aux].genero);
+				printf("|| %d ", pp[aux].mce);
+				printf("|| %d ", pp[aux].fac);
+				printf("|| %s\n", ((pp[aux].marcaBaja)?"Dada de baja" : "Vigente"));
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				printf("\nSeleccione la modificacion a realizar:\n1. Año\n2. Genero\n3. MCE\n9. Volver al menu anterior\n-> ");
 				scanf("%d", &opcion);
@@ -402,7 +424,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 								getchar();
 								printf("\nIngrese el nuevo año: ");
 								scanf("%d",&n_anyo);
-							} while(n_anyo < 1900 || n_anyo > 2013);
+							} while(n_anyo < 1900 || n_anyo > ANYOACTUAL);
 							pp[aux].anyo = n_anyo;
 						break;
 					case 2: getchar();
@@ -430,7 +452,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 		printf("|| %c ", pp[aux].genero);
 		printf("|| %d ", pp[aux].mce);
 		printf("|| %d ", pp[aux].fac);
-		printf("|| %d\n", pp[aux].marcaBaja);
+		printf("|| %s\n", ((pp[aux].marcaBaja)?"Dada de baja" : "Vigente"));
 		printf("---------------------------------------------------------------------------------------------------------\n");
 	}
 	/* Limpia buffer y vuelve al menu anterior */
@@ -454,7 +476,7 @@ void listado(peliculas *pp, int *indice) {
 		printf("\nLISTADO DE PELICULAS CARGADAS:\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		for(i = 0; i < *indice; i++) {
-			printf("%d.\t%s   %d   %c   %d   %d   %d\n",i+1, pp[i].nombre, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, pp[i].marcaBaja);
+			printf("%d.\t%s   %d   %c   %d   %d   %s\n",i+1, pp[i].nombre, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, ((pp[i].marcaBaja)?"Dada de baja" : "Vigente"));
 			printf("---------------------------------------------------------------------------------------------------------\n");
 		}
 		printf("\n");
@@ -516,7 +538,8 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 			
 			/* Busca y asigna las peliculas a la sala de acuerdo al genero seleccionado */
 			for(h = 0, n = 0; h < *indice; h++){
-				if((pp[h].genero == ps[i].generoSala) && (pp[h].mce <= ps[i].capacidad)) {
+				/* Verifica los criterios para que la pelicula pueda ser asignada a la sala */
+				if((pp[h].genero == ps[i].generoSala) && (pp[h].mce <= ps[i].capacidad) && (pp[h].marcaBaja == 0)) {
 					strcpy(ps[i].enCartelera[n].nombre, pp[h].nombre);
 					ps[i].asignadas = n+1;
 					n++;
@@ -530,22 +553,28 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 	fflush(stdin);
 }
 
-void gestionSalas(salas *ps) {
+void gestionSalas(salas *ps, int *indice) {
 	int i, j;
 	
-	fflush(stdin);
-	getchar();
-	system("clear");
-	inicio();
-	
-	/* Muestra el listado de peliculas asignadas a las correspondientes salas */
-	for(i = 0; i < 4; i++){
-		printf("\n\nPELICULAS ASIGNADAS A LA SALA \"%s\" (%d) - GENERO %c", ps[i].nombreSala, ps[i].asignadas, ps[i].generoSala);
-		printf("\n---------------------------------------------------------------------------------------------------------");
-		for(j = 0; j <= ps[i].asignadas; j++)
-			printf("\n%s",ps[i].enCartelera[j].nombre);
-		}
-	printf("\n");
+	/* Verifica que haya peliculas cargadas */
+	if(*indice == 0) {
+		system("clear");
+		inicio();
+		printf("---------------------------------------------------------------------------------------------------------\n");
+		printf("\n                                         NO HAY PELICULAS CARGADAS\n\n");
+		printf("---------------------------------------------------------------------------------------------------------\n");
+		getchar();
+	}
+	else {
+		/* Muestra el listado de peliculas asignadas a las correspondientes salas */
+		for(i = 0; i < 4; i++){
+			printf("\n\nPELICULAS ASIGNADAS A LA SALA \"%s\" (%d) - GENERO %c", ps[i].nombreSala, ps[i].asignadas, ps[i].generoSala);
+			printf("\n---------------------------------------------------------------------------------------------------------");
+			for(j = 0; j <= ps[i].asignadas; j++)
+				printf("\n%s",ps[i].enCartelera[j].nombre);
+			}
+		printf("\n");
+	}
 }
 
 int validarFecha(char *fecha) {
@@ -553,6 +582,15 @@ int validarFecha(char *fecha) {
     int m = strtol(++fecha, &fecha, 10);
     int d = strtol(++fecha, &fecha, 10);
     return (y*12+m)*31+d;
+}
+
+char generarFecha() {
+	int dia, mes, anyo;
+	
+	randomize;
+	dia = random(31);
+	anyo = 1900 + (rand() % (int)(ANYOACTUAL - 1900 + 1));
+	return 0;
 }
 
 void inicio() {
