@@ -48,7 +48,7 @@ void bajaPeli(peliculas *pp, int *indice);
 void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
 void renovarCartelera(salas *ps, peliculas *pp, int *indice);
-void gestionSalas(salas *ps, int *indice);
+void gestionSalas(salas *ps);
 
 int main() {
 	/* Array de estructuras */
@@ -85,7 +85,7 @@ int main() {
 				break;
 			case 2: renovarCartelera(ptrSala, ptrPeli, ptrIndice);
 				break;
-			case 3: gestionSalas(ptrSala, ptrIndice);
+			case 3: gestionSalas(ptrSala);
 				break;
 			case 4: 
 					system("clear");
@@ -530,7 +530,7 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 	fflush(stdin);
 }
 
-void gestionSalas(salas *ps, int *indice) {
+void gestionSalas(salas *ps) {
 	int i, j;
 	
 	fflush(stdin);
