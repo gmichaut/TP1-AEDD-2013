@@ -30,6 +30,8 @@ struct Salas {
 	char generoSala;
 	int capacidad;
 	peliculas enCartelera[10];
+	int asignadas;
+	int fechaRenovacion;
 };
 
 /* Sinonimo tipo de dato */
@@ -37,7 +39,7 @@ typedef struct Salas salas;
 
 /* Prototipo Funciones */
 int autenticar();
-int validarFecha(int *fecha);
+int validarFecha(char *fecha);
 void inicio();
 void gestionPeliculas(peliculas *pp, int *indice);
 void altaManual(peliculas *pp, int *indice);
@@ -46,7 +48,7 @@ void bajaPeli(peliculas *pp, int *indice);
 void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
 void renovarCartelera(salas *ps, peliculas *pp, int *indice);
-void gestionSalas();
+void gestionSalas(salas *ps, int *indice);
 
 int main() {
 	/* Array de estructuras */
@@ -83,7 +85,7 @@ int main() {
 				break;
 			case 2: renovarCartelera(ptrSala, ptrPeli, ptrIndice);
 				break;
-			case 3: gestionSalas();
+			case 3: gestionSalas(ptrSala, ptrIndice);
 				break;
 			case 4: 
 					system("clear");
@@ -516,7 +518,7 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 			for(h = 0, n = 0; h < *indice; h++){
 				if((pp[h].genero == ps[i].generoSala) && (pp[h].mce <= ps[i].capacidad)) {
 					strcpy(ps[i].enCartelera[n].nombre, pp[h].nombre);
-					printf("\n%s",ps[i].enCartelera[n].nombre);
+					ps[i].asignadas = n+1;
 					n++;
 				}
 			}
@@ -528,12 +530,29 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 	fflush(stdin);
 }
 
-void gestionSalas() {
+void gestionSalas(salas *ps, int *indice) {
+	int i, j;
 	
+	fflush(stdin);
+	getchar();
+	system("clear");
+	inicio();
+	
+	/* Muestra el listado de peliculas asignadas a las correspondientes salas */
+	for(i = 0; i < 4; i++){
+		printf("\n\nPELICULAS ASIGNADAS A LA SALA \"%s\" (%d) - GENERO %c", ps[i].nombreSala, ps[i].asignadas, ps[i].generoSala);
+		printf("\n---------------------------------------------------------------------------------------------------------");
+		for(j = 0; j <= ps[i].asignadas; j++)
+			printf("\n%s",ps[i].enCartelera[j].nombre);
+		}
+	printf("\n");
 }
 
-int validarFecha(int *fecha) {
-	return 0;
+int validarFecha(char *fecha) {
+    int y = strtol(fecha, &fecha, 10);
+    int m = strtol(++fecha, &fecha, 10);
+    int d = strtol(++fecha, &fecha, 10);
+    return (y*12+m)*31+d;
 }
 
 void inicio() {
