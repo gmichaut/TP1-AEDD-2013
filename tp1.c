@@ -112,7 +112,7 @@ int main() {
 		}
 	} while(opcion != 4);
 	
-	/* Libera espacio memoria */
+	/* Libera espacio reservado en memoria */
 	free(ptrPeli);
 	free(ptrSala);
 	return 0;
@@ -547,6 +547,7 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		printf("\n                                         NO HAY PELICULAS CARGADAS\n\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
+		printf("\nPRESIONE ENTER PARA CONTINUAR..");
 		getchar();
 		
 	}
@@ -603,6 +604,7 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 	}
 	/* Limpia buffer y vuelve al menu anterior */
 	fflush(stdin);
+	getchar();
 }
 
 void gestionSalas(salas *ps, int *indice) {
@@ -615,6 +617,7 @@ void gestionSalas(salas *ps, int *indice) {
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		printf("\n                                         NO HAY PELICULAS CARGADAS\n\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
+		printf("\nPRESIONE ENTER PARA CONTINUAR..");
 		getchar();
 	}
 	else {
