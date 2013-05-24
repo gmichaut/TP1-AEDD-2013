@@ -64,9 +64,13 @@ int main() {
 	salas *ptrSala;
 	ptrSala = Sala;
 	
-	/* Reserva espacio almacenamiento */
+	usuario *ptrUser;
+	ptrUser = User;
+	
+	/* Reserva espacio almacenamiento puntero */
 	ptrPeli = malloc(sizeof(Peli)*2);
 	ptrSala = malloc(sizeof(Sala)*2);
+	ptrUser = malloc(sizeof(User));
 	
 	/* Indice cantidad peliculas cargadas */
 	int indice = 0;
@@ -95,7 +99,7 @@ int main() {
 					system("clear");
 					inicio();
 					printf("---------------------------------------------------------------------------------------------------------\n");
-					printf("\n                                      GRACIAS POR UTILIZAR CINAMON\n\n");
+					printf("\n                                     GRACIAS POR UTILIZAR CINAMON\n\n");
 					printf("---------------------------------------------------------------------------------------------------------\n");
 				break;
 			default:
@@ -620,7 +624,7 @@ void gestionSalas(salas *ps, int *indice) {
 		printf("\ninicio >> gestion de salas\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		for(i = 0; i < 4; i++){
-			printf("\nPELICULAS ASIGNADAS A LA SALA \"%s\" (%d) - GENERO %c", ps[i].nombreSala, ps[i].asignadas, ps[i].generoSala);
+			printf("\nPELICULAS ASIGNADAS A LA SALA \"%s\" (%d) - GENERO: %c", ps[i].nombreSala, ps[i].asignadas, ps[i].generoSala);
 			printf("\n---------------------------------------------------------------------------------------------------------");
 			for(j = 0; j <= ps[i].asignadas; j++)
 				printf("\n%s",ps[i].enCartelera[j].nombre);
