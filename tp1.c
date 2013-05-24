@@ -39,10 +39,10 @@ struct Salas {
 typedef struct Salas salas;
 
 /* Prototipo Funciones */
-int autenticar(usuario *pu);
 int validarFecha(char *fecha);
 char generarFecha();
 void inicio();
+void autenticar(usuario pu[]);
 void gestionPeliculas(peliculas *pp, int *indice);
 void altaManual(peliculas *pp, int *indice);
 void altaMasiva(peliculas *pp, int *indice);
@@ -77,7 +77,7 @@ int main() {
 	int *ptrIndice;
 	ptrIndice = &indice;
 	
-	autenticar(ptrUser);
+	autenticar(User);
 	
 	int opcion;
 	inicio();
@@ -640,38 +640,66 @@ void gestionSalas(salas *ps, int *indice) {
 	getchar();
 }
 
-int autenticar(usuario *pu) {
-	int pass;
+void autenticar(usuario pu[]) {
+	int i, pass, userOK, auth, pos;
 	char usuario[MAXNOMBRE];
 	
-	system("clear");
-	puts("\n\n");
-	puts("                                                        **");
-	puts("                                           *** ****  ********");
-	puts("                                          *       ****      **");
-	puts("                                         **        **        *");
-	puts("                                         **        **        *");
-	puts("                                          *       ***        *");
-	puts("                                           **   ********  ***   **");
-	puts("                                           **           ** *** **");
-	puts("                                           **            *     **");
-	puts("                                           **                  **");
-	puts("                                           **                  **");
-	puts("                                            *            * **  **");
-	puts("                                                *   *          **");
-	puts("                                               *** * *");
-	puts("                                               **  ** *");
-	puts("                                              *    * **");
-	puts("                                             * *   *  **");
-	puts("                                            * *    *  * *");
-	puts("                                             *     *   * *");
-	puts("\n                                           BIENVENIDO A CINAMON");
-	printf("\n                                           USUARIO: ");
-	fgets(usuario,50,stdin);
-	printf("\n                                           CONTRASEÑA: ");
-	scanf("%d",&pass);
+	do {
+		system("clear");
+		puts("\n\n");
+		puts("                                                      **");
+		puts("                                         *** ****  ********");
+		puts("                                        *       ****      **");
+		puts("                                       **        **        *");
+		puts("                                       **        **        *");
+		puts("                                        *       ***        *");
+		puts("                                         **   ********  ***   **");
+		puts("                                         **           ** *** **");
+		puts("                                         **            *     **");
+		puts("                                         **                  **");
+		puts("                                         **                  **");
+		puts("                                          *            * **  **");
+		puts("                                              *   *          **");
+		puts("                                             *** * *");
+		puts("                                             **  ** *");
+		puts("                                            *    * **");
+		puts("                                           * *   *  **");
+		puts("                                          * *    *  * *");
+		puts("                                           *     *   * *");
+		puts("\n                                         BIENVENIDO A CINAMON");
+		fflush(stdin);
+		printf("\n                                         USUARIO: ");
+		fgets(usuario,50,stdin);
+		for(i= 0; i < 10; i++){
+			auth = strcmp(pu[i].nombreUsuario, usuario);
+			/* Valida el usuario */
+			if(auth == 0) {
+				pos = i;
+				userOK = 1;
+			}
+			else
+				userOK = 0;
+		}
+		fflush(stdin);
+		printf("\n                                         CONTRASEÑA: ");
+		scanf("%d",&pass);
+		if((pu[pos].password == pass))
+			auth = 1;
+		else {
+			auth = 0;
+			printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("\n                                    USUARIO O CONTRASEÑA INCORRECTOS\n\n");
+			printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("\nPRESIONE ENTER PARA CONTINUAR..");
+			getchar();
+		}
+		getchar();
+	} while (auth == 0);
+	printf("---------------------------------------------------------------------------------------------------------\n");
+	printf("\n                                         INGRESO SATISFACTORIO\n\n");
+	printf("---------------------------------------------------------------------------------------------------------\n");
+	printf("\nPRESIONE ENTER PARA CONTINUAR..");
 	getchar();
-	return 0;
 }
 
 int validarFecha(char *fecha) {

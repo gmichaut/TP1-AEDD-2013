@@ -9,17 +9,17 @@ struct Usuario {
 typedef struct Usuario usuario;
 
 /* Declaro un array de 10 usuarios y lo inicializo */
-usuario User[9] = {
-					{"el secreto de sus ojos", 2009},
-					{"un novio para mi mujer", 2008},
-					{"el abrazo partido", 2004},
-					{"nueve reinas", 2000},
-					{"mundo grua", 1999},
-					{"dias de pesca", 2012},
-					{"el cielo elegido", 2012},
-					{"escuela normal", 2012},
-					{"un lugar en el mundo", 1992},
-					{"la historia oficial", 1985}
+usuario User[10];
+usuario User[] = {
+					{"el secreto de sus ojos\n", 2009},
+					{"un novio para mi mujer\n", 2008},
+					{"el abrazo partido\n", 2004},
+					{"nueve reinas\n", 2000},
+					{"mundo grua\n", 1999},
+					{"dias de pesca\n", 2012},
+					{"el cielo elegido\n", 2012},
+					{"escuela normal\n", 2012},
+					{"un lugar en el mundo\n", 1992},
+					{"la historia oficial\n", 1985}
 					};
-
-/* implementar ingreso usuario con un loop y un strcmp */
+/* FIN ADMIN.H */
