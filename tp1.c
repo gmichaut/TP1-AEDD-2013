@@ -55,6 +55,7 @@ void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
 void renovarCartelera(salas *ps, peliculas *pp, int *indice);
 void gestionSalas(salas *ps, int *indice);
+char fechaActual();
 
 int main() {
 	/* Array de estructuras */
@@ -81,6 +82,7 @@ int main() {
 	int *ptrIndice;
 	ptrIndice = &indice;
 	
+	/* Autenticamos el usuario */
 	autenticar(User);
 	
 	int opcion;
@@ -367,7 +369,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 						pp[aux].marcaBaja = 1;
 						system("clear");
 						inicio();
-						printf("\ninicio >> gestion de peliculas >> baja\n");
+						printf("\nSE HA DADO DE BAJA LA SIGUIENTE PELICULA:\n");
 						printf("---------------------------------------------------------------------------------------------------------\n");
 						printf("\n%d. %s ",aux+1, pp[aux].nombre);
 						printf("|| %d ", pp[aux].anyo);
@@ -586,6 +588,7 @@ void listado(peliculas *pp, int *indice) {
 void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 	int i, j, k, h, n, genSala, indiceGen = 4;
 	char gen[] = {'A','C','D','S','T'};
+	char fechahoy[10];
 
 	/* Verifica que haya peliculas cargadas */
 	if(*indice == 0) {
@@ -646,7 +649,7 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 				/* Verifica los criterios para que la pelicula pueda ser asignada a la sala */
 				if((pp[h].genero == ps[i].generoSala) && (pp[h].mce <= ps[i].capacidad) && (pp[h].marcaBaja == 0)) {
 					strcpy(ps[i].enCartelera[n].nombre, pp[h].nombre);
-					ps[i].enCartelera[i].mce = 23112013;
+					ps[i].enCartelera[i].fac = 23112013;
 					ps[i].asignadas = n+1;
 					n++;
 				}
@@ -760,7 +763,17 @@ void autenticar(usuario pu[]) {
 	getchar();
 }
 
+char fechaActual(char *fecha) {
+	time_t tiempo = time(0);
+	struct tm *tlocal = localtime(&tiempo);
+	strftime(fecha,12,"%d/%m/%Y",tlocal);
+	return *fecha;
+}
+
 void inicio() {
+	char ltime[12];
+	fechaActual(ltime);
+	printf("%s\n",ltime);
 	puts(".........................................................................................................");
 	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
 	puts("  #########   .   ######    .  ###     ##  .  ###########  .  ###     ###  .  ######### .  ###     ## .");
