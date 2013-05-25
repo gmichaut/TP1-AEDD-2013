@@ -353,38 +353,42 @@ void bajaPeli(peliculas *pp, int *indice) {
 			scanf("%d",&num);
 			} while(num < 0 || num >= j+1);
 					
-			getchar();
-			printf("\nCONFIRMA LOS CAMBIOS? (S)i - (N)o: ");
-			scanf("%c",&opcion);
+			do {
+				getchar();
+				printf("\nCONFIRMA LOS CAMBIOS? (S)i - (N)o: ");
+				scanf("%c",&opcion);
 			
-			switch (opcion) {
-				case 'S':
-				case 's':
-					aux = pos[num-1];
-					pp[aux].marcaBaja = 1;
-					system("clear");
-					inicio();
-					printf("\ninicio >> gestion de peliculas >> baja\n");
-					printf("---------------------------------------------------------------------------------------------------------\n");
-					printf("\n%d. %s ",aux+1, pp[aux].nombre);
-					printf("|| %d ", pp[aux].anyo);
-					printf("|| %c ", pp[aux].genero);
-					printf("|| %d ", pp[aux].mce);
-					printf("|| %d ", pp[aux].fac);
-					printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
-					printf("---------------------------------------------------------------------------------------------------------\n");
-					printf("\nPRESIONE ENTER PARA CONTINUAR..");
-					getchar();
-					break;
-				case 'N':
-				case 'n':
-					printf("---------------------------------------------------------------------------------------------------------\n");
-					printf("\n                                        NO SE REALIZARON CAMBIOS\n\n");
-					printf("---------------------------------------------------------------------------------------------------------\n");
-					printf("\nPRESIONE ENTER PARA CONTINUAR..");
-					getchar();
-					break;
-			}
+				switch (opcion) {
+					case 'S':
+					case 's':
+						aux = pos[num-1];
+						pp[aux].marcaBaja = 1;
+						system("clear");
+						inicio();
+						printf("\ninicio >> gestion de peliculas >> baja\n");
+						printf("---------------------------------------------------------------------------------------------------------\n");
+						printf("\n%d. %s ",aux+1, pp[aux].nombre);
+						printf("|| %d ", pp[aux].anyo);
+						printf("|| %c ", pp[aux].genero);
+						printf("|| %d ", pp[aux].mce);
+						printf("|| %d ", pp[aux].fac);
+						printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
+						printf("---------------------------------------------------------------------------------------------------------\n");
+						printf("\nPRESIONE ENTER PARA CONTINUAR..");
+						getchar();
+						break;
+					case 'N':
+					case 'n':
+						printf("---------------------------------------------------------------------------------------------------------\n");
+						printf("\n                                        NO SE REALIZARON CAMBIOS\n\n");
+						printf("---------------------------------------------------------------------------------------------------------\n");
+						printf("\nPRESIONE ENTER PARA CONTINUAR..");
+						getchar();
+						break;
+					default: opcion = -1;
+						break;
+				}
+			} while(opcion == -1);
 		}
 	}
 	
@@ -482,10 +486,36 @@ void modificarPeli(peliculas *pp, int *indice) {
 							} while(n_anyo < 1900 || n_anyo > ANYOACTUAL);
 							pp[aux].anyo = n_anyo;
 						break;
-					case 2: getchar();
-							printf("\nIngrese el nuevo genero: ");
-							scanf("%c",&n_genero);
-							pp[aux].genero = n_genero;
+					case 2:	do {
+								fflush(stdin);
+								getchar();
+								printf("\nIngrese el nuevo genero: ");
+								scanf("%c",&n_genero);
+								switch (n_genero) {
+									case 'A':
+									case 'a':
+										pp[aux].genero = toupper(n_genero);
+										break;
+									case 'C':
+									case 'c':
+										pp[aux].genero = toupper(n_genero);
+										break;
+									case 'D':
+									case 'd':
+										pp[aux].genero = toupper(n_genero);
+										break;
+									case 'S':
+									case 's':
+										pp[aux].genero = toupper(n_genero);
+										break;
+									case 'T':
+									case 't':
+										pp[aux].genero = toupper(n_genero);
+										break;
+									default: n_genero = -1;
+										break;
+								}
+							} while(n_genero == -1);
 						break;
 					case 3: do {
 								getchar();
@@ -494,7 +524,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 							} while(n_mce < 0 || n_mce > MAXSALA);
 							pp[aux].mce = n_mce;
 						break;
-					case 9: 
+					case 4: 
 						break;
 				}
 			} while(opcion > 3 || opcion < 0);
