@@ -438,12 +438,10 @@ void modificarPeli(peliculas *pp, int *indice) {
 		printf("CANTIDAD PELICULAS ENCONTRADAS: %d\n",j);
 	
 		/* Si no encuentra peliculas muestra msj y vuelve al menu anterior */
-		if(bandera != 0){
+		if(bandera != 0) {
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			printf("\n                                     NO SE ENCONTRO NINGUNA PELICULA\n\n");
 			printf("---------------------------------------------------------------------------------------------------------\n");
-			printf("\nPRESIONE ENTER PARA CONTINUAR..");
-			getchar();
 		}
 		else {
 			do {
@@ -496,7 +494,6 @@ void modificarPeli(peliculas *pp, int *indice) {
 						break;
 				}
 			} while(opcion > 3 || opcion < 0);
-		}
 		
 		system("clear");
 		inicio();
@@ -509,6 +506,8 @@ void modificarPeli(peliculas *pp, int *indice) {
 		printf("|| %d ", pp[aux].fac);
 		printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
 		printf("---------------------------------------------------------------------------------------------------------\n");
+		
+		}
 	}
 	
 	bandera = -1;
