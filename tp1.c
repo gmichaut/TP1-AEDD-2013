@@ -112,6 +112,7 @@ int main() {
 			default:
 					system("clear");
 					inicio();
+					printf("\ninicio\n");
 					printf("---------------------------------------------------------------------------------------------------------\n");
 					printf("\n                                          OPCION INCORRECTA\n\n");
 					printf("---------------------------------------------------------------------------------------------------------\n");
@@ -122,6 +123,7 @@ int main() {
 	/* Libera espacio reservado en memoria */
 	free(ptrPeli);
 	free(ptrSala);
+	free(ptrUser);
 	return 0;
 }
 
