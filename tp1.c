@@ -104,6 +104,7 @@ int main() {
 			case 4: 
 					system("clear");
 					inicio();
+					printf("\nsalir\n");
 					printf("---------------------------------------------------------------------------------------------------------\n");
 					printf("\n                                     GRACIAS POR UTILIZAR CINAMON\n\n");
 					printf("---------------------------------------------------------------------------------------------------------\n");
@@ -173,6 +174,7 @@ void altaManual(peliculas *pp, int *indice) {
 	if(*indice == MAXPELI){
 		system("clear");
 		inicio();
+		printf("\ninicio >> gestion de peliculas >> alta manual\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		printf("\n                                   NO SE PUEDEN CARGAR MAS PELICULAS\n\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
@@ -237,6 +239,9 @@ void altaMasiva(peliculas *pp, int *indice) {
 	randomize;
 	
 	if(*indice == MAXPELI){
+		system("clear");
+		inicio();
+		printf("\ninicio >> gestion de peliculas >> alta masiva\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		printf("\n                                    NO SE PUEDEN CARGAR MAS PELICULAS\n\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
@@ -268,17 +273,18 @@ void altaMasiva(peliculas *pp, int *indice) {
 			/* incremento el indice de peliculas */
 			*indice += 1;
 		}
+
+		system("clear");
+		inicio();
+		printf("\ninicio >> gestion de peliculas >> alta masiva\n");
+		printf("---------------------------------------------------------------------------------------------------------\n");
+		printf("\n                                    CANTIDAD PELICULAS CARGADAS: %d\n\n",*indice);
+		printf("---------------------------------------------------------------------------------------------------------\n");
+		printf("\nPRESIONE ENTER PARA CONTINUAR..");
+		getchar();
 	}
-	system("clear");
-	inicio();
-	printf("\ninicio >> gestion de peliculas >> alta masiva\n");
-	printf("---------------------------------------------------------------------------------------------------------\n");
-	printf("\n                                    CANTIDAD PELICULAS CARGADAS: %d\n\n",*indice);
-	printf("---------------------------------------------------------------------------------------------------------\n");
 	
 	/* Limpia buffer y vuelve al menu anterior */
-	printf("\nPRESIONE ENTER PARA CONTINUAR..");
-	getchar();
 	fflush(stdin);
 }
 
@@ -287,10 +293,9 @@ void bajaPeli(peliculas *pp, int *indice) {
 	   marcaBaja = 1 : Pelicula VIGENTE */
 	
 	int i, j, num, aux, bandera = -1, pos[MAXPELI];
-	char opcion;
-	char *ptr, *nombrePeli;
+	char opcion, nombrePeli[MAXNOMBRE];
+	char *ptr;
 	
-	nombrePeli = malloc(sizeof(char)*50);
 	
 	/* Verifica que haya peliculas cargadas */
 	if(*indice == 0) {
@@ -324,7 +329,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 				printf("|| %c ", pp[i].genero);
 				printf("|| %d ", pp[i].mce);
 				printf("|| %d ", pp[i].fac);
-				printf("|| %s\n", ((pp[i].marcaBaja)?"Dada de baja" : "VIGENTE"));
+				printf("|| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				pos[j] = i;
 				j++;
@@ -383,18 +388,17 @@ void bajaPeli(peliculas *pp, int *indice) {
 		}
 	}
 	
+	/* Vuelve bandera a su estado inicial */
 	bandera = -1;
-	/* Limpia buffer y vuelve al menu anterior */
 	
+	/* Limpia buffer y vuelve al menu anterior */
 	fflush(stdin);
 }
 
 void modificarPeli(peliculas *pp, int *indice) {
 	int i, j, num, aux, bandera = -1, opcion, n_anyo, n_mce, pos[MAXPELI];
-	char n_genero;
-	char *ptr, *nombrePeli;
-	
-	nombrePeli = malloc(sizeof(char)*50);
+	char n_genero, nombrePeli[MAXNOMBRE];
+	char *ptr;
 	
 	/* Verifica que haya peliculas cargadas */
 	if(*indice == 0) {
@@ -509,8 +513,9 @@ void modificarPeli(peliculas *pp, int *indice) {
 		
 		}
 	}
-	
+	/* Vuelve bandera a su estado inicial */
 	bandera = -1;
+	
 	/* Limpia buffer y vuelve al menu anterior */
 	fflush(stdin);
 	printf("\nPRESIONE ENTER PARA CONTINUAR..");
@@ -589,12 +594,16 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 			for(j = 0; j <= indiceGen; j++)
 				printf("| %d. %c ", j+1, gen[j]);
 			
-			printf("\nIngrese el numero correspondiente: ");
-			scanf("%d",&genSala);
+			/* Verifica que el numero ingresado este dentro del rango */
+			do {
+				printf("\nIngrese el numero correspondiente: ");
+				scanf("%d",&genSala);
+			} while((genSala > j) || (genSala < 0));
 			
 			/* Asigna e imprime el genero seleccionado a la sala */
 			ps[i].generoSala = gen[genSala-1];
 			printf("\nGENERO SALA %s: %c\n", ps[i].nombreSala, ps[i].generoSala);
+			getchar();
 			
 			/* Elimina de la lista de generos disponibles al genero seleccionado */
 			for(k = genSala-1; k <= indiceGen; k++)
@@ -605,6 +614,7 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 				/* Verifica los criterios para que la pelicula pueda ser asignada a la sala */
 				if((pp[h].genero == ps[i].generoSala) && (pp[h].mce <= ps[i].capacidad) && (pp[h].marcaBaja == 0)) {
 					strcpy(ps[i].enCartelera[n].nombre, pp[h].nombre);
+					ps[i].enCartelera[i].mce = 23112013;
 					ps[i].asignadas = n+1;
 					n++;
 				}
@@ -632,6 +642,7 @@ void gestionSalas(salas *ps, int *indice) {
 		printf("\nPRESIONE ENTER PARA CONTINUAR..");
 		getchar();
 	}
+	
 	else {
 		/* Muestra el listado de peliculas asignadas a las correspondientes salas */
 		system("clear");
@@ -651,7 +662,7 @@ void gestionSalas(salas *ps, int *indice) {
 }
 
 void autenticar(usuario pu[]) {
-	int i, pass, userOK, auth, pos;
+	int i, pass, userOK = 0, auth, pos;
 	char usuario[MAXNOMBRE];
 	
 	do {
@@ -678,23 +689,27 @@ void autenticar(usuario pu[]) {
 		puts("                                           *     *   * *");
 		puts("\n                                         BIENVENIDO A CINAMON");
 		fflush(stdin);
+		
 		printf("\n                                         USUARIO: ");
 		fgets(usuario,50,stdin);
-		for(i= 0; i < 10; i++){
+		
+		for(i= 0; i < 10; i++) {
 			auth = strcmp(pu[i].nombreUsuario, usuario);
 			/* Valida el usuario */
 			if(auth == 0) {
 				pos = i;
 				userOK = 1;
 			}
-			else
-				userOK = 0;
 		}
+		
 		fflush(stdin);
 		printf("\n                                         CONTRASEÑA: ");
 		scanf("%d",&pass);
-		if(pu[pos].password == pass)
+		
+		/* Verifica que el usuario y contraseña coincidan */
+		if((pu[pos].password == pass) && userOK == 1)
 			auth = 1;
+		
 		else {
 			auth = 0;
 			printf("---------------------------------------------------------------------------------------------------------\n");
@@ -705,6 +720,7 @@ void autenticar(usuario pu[]) {
 		}
 		getchar();
 	} while (auth == 0);
+	
 	printf("---------------------------------------------------------------------------------------------------------\n");
 	printf("\n                                         INGRESO SATISFACTORIO\n\n");
 	printf("---------------------------------------------------------------------------------------------------------\n");
