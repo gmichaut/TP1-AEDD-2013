@@ -39,8 +39,6 @@ struct Salas {
 typedef struct Salas salas;
 
 /* Prototipo Funciones */
-int validarFecha(char *fecha);
-char generarFecha();
 void inicio();
 void autenticar(usuario pu[]);
 void gestionPeliculas(peliculas *pp, int *indice);
@@ -103,7 +101,6 @@ int main() {
 					printf("---------------------------------------------------------------------------------------------------------\n");
 					printf("\n                                     GRACIAS POR UTILIZAR CINAMON\n\n");
 					printf("---------------------------------------------------------------------------------------------------------\n");
-					getchar();
 				break;
 			default:
 					system("clear");
@@ -118,7 +115,6 @@ int main() {
 	/* Libera espacio reservado en memoria */
 	free(ptrPeli);
 	free(ptrSala);
-	free(ptrUser);
 	return 0;
 }
 
@@ -288,6 +284,8 @@ void bajaPeli(peliculas *pp, int *indice) {
 	char opcion;
 	char *ptr, *nombrePeli;
 	
+	nombrePeli = malloc(sizeof(char)*50);
+	
 	/* Verifica que haya peliculas cargadas */
 	if(*indice == 0) {
 		system("clear");
@@ -388,9 +386,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 	char n_genero;
 	char *ptr, *nombrePeli;
 	
-	/* Reserva espacio de memoria para los punteros */
-	nombrePeli = malloc(sizeof(char)*60);
-	ptr = malloc(sizeof(char)*60);
+	nombrePeli = malloc(sizeof(char)*50);
 	
 	/* Verifica que haya peliculas cargadas */
 	if(*indice == 0) {
@@ -464,7 +460,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				printf("\n\nSELECCIONE LA MODIFICACION A REALIZAR:\n");
 				printf("---------------------------------------------------------------------------------------------------------\n");
-				printf("                      1. Anyo | 2. Genero | 3. MCE | 4. Volver al menu anterior\n");
+				printf("                      1. Año | 2. Género | 3. MCE | 4. Volvel al menú anterior\n");
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				printf("-> ");
 				scanf("%d", &opcion);
@@ -685,7 +681,7 @@ void autenticar(usuario pu[]) {
 		fflush(stdin);
 		printf("\n                                         CONTRASEÑA: ");
 		scanf("%d",&pass);
-		if(pu[pos].password == pass)
+		if((pu[pos].password == pass))
 			auth = 1;
 		else {
 			auth = 0;
@@ -702,22 +698,6 @@ void autenticar(usuario pu[]) {
 	printf("---------------------------------------------------------------------------------------------------------\n");
 	printf("\nPRESIONE ENTER PARA CONTINUAR..");
 	getchar();
-}
-
-int validarFecha(char *fecha) {
-    int y = strtol(fecha, &fecha, 10);
-    int m = strtol(++fecha, &fecha, 10);
-    int d = strtol(++fecha, &fecha, 10);
-    return (y*12+m)*31+d;
-}
-
-char generarFecha() {
-	int dia, mes, anyo;
-	
-	randomize;
-	dia = random(31);
-	anyo = 1900 + (rand() % (int)(ANYOACTUAL - 1900 + 1));
-	return 0;
 }
 
 void inicio() {
