@@ -24,7 +24,7 @@ struct Peliculas {
 	int anyo;
 	char genero;
 	int mce;
-	int fac;
+	char fac[12];
 	int marcaBaja;
 };
 
@@ -38,7 +38,6 @@ struct Salas {
 	int capacidad;
 	peliculas enCartelera[10];
 	int asignadas;
-	int fechaRenovacion;
 };
 
 /* Sinonimo tipo de dato */
@@ -55,7 +54,8 @@ void modificarPeli(peliculas *pp, int *indice);
 void listado(peliculas *pp, int *indice);
 void renovarCartelera(salas *ps, peliculas *pp, int *indice);
 void gestionSalas(salas *ps, int *indice);
-char fechaActual();
+void fechaActual();
+int validoFecha(char *fecha);
 
 int main() {
 	/* Array de estructuras */
@@ -171,7 +171,6 @@ void gestionPeliculas(peliculas *pp, int *indice) {
 }
 
 void altaManual(peliculas *pp, int *indice) {
-	struct tm fecha;
 	char opcion;
 	
 	/* Verifica si se alcanzo el limite de peliculas */
@@ -211,9 +210,6 @@ void altaManual(peliculas *pp, int *indice) {
 				scanf("%d",&pp[*indice].mce);
 			} while((pp[*indice].mce > MAXSALA) || (pp[*indice].mce < 0));
 			printf("---------------------------------------------------------------------------------------------------------\n");
-			printf("INGRESE FECHA ASIGNACION EN CARTELERA EN FORMATO DDMMAAAA: ");
-			scanf("%d",&pp[*indice].fac);
-			getchar();
 			
 			/* Pelicula se carga con estado "Vigente" */
 			pp[*indice].marcaBaja = 0;
@@ -266,7 +262,7 @@ void altaMasiva(peliculas *pp, int *indice) {
 			pp[*indice].mce = random(MAXSALA+1);
 			
 			/* Inicializa FAC en blanco */
-			pp[*indice].fac = 0;
+			strcpy(pp[*indice].fac, "");
 			
 			/* Asigna el genero aleatorio */
 			pp[*indice].genero = gen[random(5)];
@@ -332,7 +328,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 				printf("|| %d ", pp[i].anyo);
 				printf("|| %c ", pp[i].genero);
 				printf("|| %d ", pp[i].mce);
-				printf("|| %d ", pp[i].fac);
+				printf("|| %s ", pp[i].fac);
 				printf("|| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				pos[j] = i;
@@ -375,7 +371,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 						printf("|| %d ", pp[aux].anyo);
 						printf("|| %c ", pp[aux].genero);
 						printf("|| %d ", pp[aux].mce);
-						printf("|| %d ", pp[aux].fac);
+						printf("|| %s ", pp[aux].fac);
 						printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
 						printf("---------------------------------------------------------------------------------------------------------\n");
 						printf("\nPRESIONE ENTER PARA CONTINUAR..");
@@ -438,7 +434,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 				printf("|| %d ", pp[i].anyo);
 				printf("|| %c ", pp[i].genero);
 				printf("|| %d ", pp[i].mce);
-				printf("|| %d ", pp[i].fac);
+				printf("|| %s ", pp[i].fac);
 				printf("|| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				pos[j] = i;
@@ -473,7 +469,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 				printf("|| %d ", pp[aux].anyo);
 				printf("|| %c ", pp[aux].genero);
 				printf("|| %d ", pp[aux].mce);
-				printf("|| %d ", pp[aux].fac);
+				printf("|| %s ", pp[aux].fac);
 				printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				printf("\n\nSELECCIONE LA MODIFICACION A REALIZAR:\n");
@@ -541,7 +537,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 		printf("|| %d ", pp[aux].anyo);
 		printf("|| %c ", pp[aux].genero);
 		printf("|| %d ", pp[aux].mce);
-		printf("|| %d ", pp[aux].fac);
+		printf("|| %s ", pp[aux].fac);
 		printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		
@@ -574,7 +570,7 @@ void listado(peliculas *pp, int *indice) {
 		printf("\ninicio >> gestion de peliculas >> listado\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		for(i = 0; i < *indice; i++) {
-			printf("%d.\t%s   %d   %c   %d   %d   %s\n",i+1, pp[i].nombre, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, ((pp[i].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
+			printf("%d.  %s   %d   %c   %d   %s   %s\n",i+1, pp[i].nombre, pp[i].anyo, pp[i].genero, pp[i].mce, pp[i].fac, ((pp[i].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
 			printf("---------------------------------------------------------------------------------------------------------\n");
 		}
 		printf("\n");
@@ -586,10 +582,12 @@ void listado(peliculas *pp, int *indice) {
 }
 
 void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
-	int i, j, k, h, n, genSala, indiceGen = 4;
+	int i, j, k, h, n, genSala, fechaOK = 0, indiceGen = 4;
 	char gen[] = {'A','C','D','S','T'};
-	char fechahoy[10];
-
+	char fechahoy[12];
+	
+	fechaActual(fechahoy);
+	
 	/* Verifica que haya peliculas cargadas */
 	if(*indice == 0) {
 		system("clear");
@@ -646,15 +644,22 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 			
 			/* Busca y asigna las peliculas a la sala de acuerdo al genero seleccionado */
 			for(h = 0, n = 0; h < *indice; h++){
+				
+				/* Verifica la FAC con la fecha actual. En caso de haber pasado mas de 7 dias da el OK. -2604 y 8897 num magicos que indican dif 7 dias */
+				if((validoFecha(pp[h].fac) - validoFecha(fechahoy) >= -2604) || (validoFecha(pp[h].fac) - validoFecha(fechahoy) <= 8897))
+					fechaOK = 1;
+				
 				/* Verifica los criterios para que la pelicula pueda ser asignada a la sala */
-				if((pp[h].genero == ps[i].generoSala) && (pp[h].mce <= ps[i].capacidad) && (pp[h].marcaBaja == 0)) {
+				if((pp[h].genero == ps[i].generoSala) && (pp[h].mce <= ps[i].capacidad) && (pp[h].marcaBaja == 0) && fechaOK == 1) {
 					strcpy(ps[i].enCartelera[n].nombre, pp[h].nombre);
-					ps[i].enCartelera[i].fac = 23112013;
+					strcpy(ps[i].enCartelera[n].fac, fechahoy);
+					strcpy(pp[h].fac, fechahoy);
+					ps[i].enCartelera[n].anyo = pp[h].anyo;
+					ps[i].enCartelera[n].genero = pp[h].genero;
 					ps[i].asignadas = n+1;
 					n++;
 				}
 			}
-			
 			indiceGen--;
 		}
 	}
@@ -687,8 +692,9 @@ void gestionSalas(salas *ps, int *indice) {
 		for(i = 0; i < 4; i++){
 			printf("\nPELICULAS ASIGNADAS A LA SALA \"%s\" (%d) - GENERO: %c", ps[i].nombreSala, ps[i].asignadas, ps[i].generoSala);
 			printf("\n---------------------------------------------------------------------------------------------------------");
-			for(j = 0; j <= ps[i].asignadas; j++)
-				printf("\n%s",ps[i].enCartelera[j].nombre);
+			for(j = 0; j < ps[i].asignadas; j++)
+				printf("\n%s || %d || %s",ps[i].enCartelera[j].nombre, ps[i].enCartelera[j].anyo, ps[i].enCartelera[j].fac);
+			printf("\n\n");
 			}
 		printf("\nPRESIONE ENTER PARA CONTINUAR..");
 		getchar();
@@ -763,11 +769,17 @@ void autenticar(usuario pu[]) {
 	getchar();
 }
 
-char fechaActual(char *fecha) {
+void fechaActual(char *fecha) {
 	time_t tiempo = time(0);
 	struct tm *tlocal = localtime(&tiempo);
 	strftime(fecha,12,"%d/%m/%Y",tlocal);
-	return *fecha;
+}
+
+int validoFecha(char *fecha) {
+    int a = strtol(fecha, &fecha, 10);
+    int m = strtol(++fecha, &fecha, 10);
+    int d = strtol(++fecha, &fecha, 10);
+    return (a*12+m)*31+d;
 }
 
 void inicio() {
@@ -785,4 +797,3 @@ void inicio() {
 	puts(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
 	puts(".........................................................................................................");
 }
-
