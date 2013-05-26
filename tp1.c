@@ -171,7 +171,7 @@ void gestionPeliculas(peliculas *pp, int *indice) {
 }
 
 void altaManual(peliculas *pp, int *indice) {
-	char opcion;
+	char opcion, n_genero;
 	
 	/* Verifica si se alcanzo el limite de peliculas */
 	if(*indice == MAXPELI){
@@ -200,9 +200,36 @@ void altaManual(peliculas *pp, int *indice) {
 				scanf("%d",&pp[*indice].anyo);
 			} while((pp[*indice].anyo > ANYOACTUAL) || (pp[*indice].anyo < 1900));
 			printf("---------------------------------------------------------------------------------------------------------\n");
-			printf("SELECCIONE EL GENERO (A)ccion - (C)omedia - (D)rama - (S)uspenso - (T)error : ");
-			getchar();
-			scanf("%c",&pp[*indice].genero);
+			do {
+				fflush(stdin);
+				getchar();
+				printf("SELECCIONE EL GENERO (A)ccion - (C)omedia - (D)rama - (S)uspenso - (T)error : ");
+				scanf("%c",&n_genero);
+				switch (n_genero) {
+					case 'A':
+					case 'a':
+						pp[*indice].genero = toupper(n_genero);
+						break;
+					case 'C':
+					case 'c':
+						pp[*indice].genero = toupper(n_genero);
+						break;
+					case 'D':
+					case 'd':
+						pp[*indice].genero = toupper(n_genero);
+						break;
+					case 'S':
+					case 's':
+						pp[*indice].genero = toupper(n_genero);
+						break;
+					case 'T':
+					case 't':
+						pp[*indice].genero = toupper(n_genero);
+						break;
+					default: n_genero = -1;
+						break;
+				}
+			} while(n_genero == -1);
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			do {
 				printf("INGRESE LA CANTIDAD EXPECTADORES QUE SE ESPERAN: ");
@@ -450,6 +477,8 @@ void modificarPeli(peliculas *pp, int *indice) {
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			printf("\n                                     NO SE ENCONTRO NINGUNA PELICULA\n\n");
 			printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("\nPRESIONE ENTER PARA CONTINUAR..");
+			getchar();
 		}
 		else {
 			do {
@@ -461,6 +490,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 			aux = pos[num-1];
 			
 			do {
+				fflush(stdin);
 				system("clear");
 				inicio();
 				printf("\nPELICULA A MODIFICAR:\n");
@@ -526,8 +556,10 @@ void modificarPeli(peliculas *pp, int *indice) {
 						break;
 					case 4: 
 						break;
+					default: opcion = -1;
+						break;
 				}
-			} while(opcion > 3 || opcion < 0);
+			} while(opcion == -1);
 		
 		system("clear");
 		inicio();
@@ -540,7 +572,8 @@ void modificarPeli(peliculas *pp, int *indice) {
 		printf("|| %s ", pp[aux].fac);
 		printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
 		printf("---------------------------------------------------------------------------------------------------------\n");
-		
+		printf("\nPRESIONE ENTER PARA CONTINUAR..");
+		getchar();
 		}
 	}
 	/* Vuelve bandera a su estado inicial */
@@ -548,8 +581,6 @@ void modificarPeli(peliculas *pp, int *indice) {
 	
 	/* Limpia buffer y vuelve al menu anterior */
 	fflush(stdin);
-	printf("\nPRESIONE ENTER PARA CONTINUAR..");
-	getchar();
 }
 
 void listado(peliculas *pp, int *indice) {
@@ -635,8 +666,6 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 			
 			/* Asigna e imprime el genero seleccionado a la sala */
 			ps[i].generoSala = gen[genSala-1];
-			printf("\nGENERO SALA %s: %c\n", ps[i].nombreSala, ps[i].generoSala);
-			getchar();
 			
 			/* Elimina de la lista de generos disponibles al genero seleccionado */
 			for(k = genSala-1; k <= indiceGen; k++)
@@ -663,6 +692,8 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 			indiceGen--;
 		}
 	}
+	
+	fechaOK = 0;
 	/* Limpia buffer y vuelve al menu anterior */
 	fflush(stdin);
 	getchar();
@@ -731,7 +762,7 @@ void autenticar(usuario pu[]) {
 		puts("\n                                         BIENVENIDO A CINAMON");
 		fflush(stdin);
 		
-		printf("\n                                         USUARIO: ");
+		printf("\n\n                                         USUARIO: ");
 		fgets(usuario,50,stdin);
 		
 		for(i= 0; i < 10; i++) {
@@ -744,7 +775,7 @@ void autenticar(usuario pu[]) {
 		}
 		
 		fflush(stdin);
-		printf("\n                                         CONTRASEÑA: ");
+		printf("                                         CONTRASEÑA: ");
 		scanf("%d",&pass);
 		
 		/* Verifica que el usuario y contraseña coincidan */
@@ -753,7 +784,7 @@ void autenticar(usuario pu[]) {
 		
 		else {
 			auth = 0;
-			printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("\n---------------------------------------------------------------------------------------------------------\n");
 			printf("\n                                    USUARIO O CONTRASEÑA INCORRECTOS\n\n");
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			printf("\nPRESIONE ENTER PARA CONTINUAR..");
@@ -762,7 +793,7 @@ void autenticar(usuario pu[]) {
 		getchar();
 	} while (auth == 0);
 	
-	printf("---------------------------------------------------------------------------------------------------------\n");
+	printf("\n---------------------------------------------------------------------------------------------------------\n");
 	printf("\n                                         INGRESO SATISFACTORIO\n\n");
 	printf("---------------------------------------------------------------------------------------------------------\n");
 	printf("\nPRESIONE ENTER PARA CONTINUAR..");
