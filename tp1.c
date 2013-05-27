@@ -354,7 +354,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 			ptr = strstr(pp[i].nombre, nombrePeli);
 			/* Verifica que la busqueda haya arrojado resultados */
 			if(ptr != NULL) {
-				printf("%d.\t",j+1);
+				printf("%d. ",j+1);
                 printf("%s", pp[i].nombre);
                 /* Formatea el nombre para mostrar en tabla */
                 for (h = 0; h < (MAXNOMBRE - strlen(pp[i].nombre)); h++)
@@ -403,7 +403,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 						printf("---------------------------------------------------------------------------------------------------------\n");
 						printf("\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC           ESTADO\n");
                         printf("---------------------------------------------------------------------------------------------------------\n");
-                        printf("%d.\t",aux+1);
+                        printf("%d. ",aux+1);
                         printf("%s", pp[aux].nombre);
                         /* Formatea el nombre para mostrar en tabla */
                         for (j = 0; j < (MAXNOMBRE - strlen(pp[aux].nombre)); j++)
@@ -472,7 +472,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 			ptr = strstr(pp[i].nombre, nombrePeli);
 			/* Verifica que la busqueda haya arrojado resultados */
 			if(ptr != NULL) {
-				printf("%d.\t",j+1);
+				printf("%d. ",j+1);
                 printf("%s", pp[i].nombre);
                 /* Formatea el nombre para mostrar en tabla */
                 for (j = 0; j < (MAXNOMBRE - strlen(pp[i].nombre)); j++)
@@ -516,7 +516,7 @@ void modificarPeli(peliculas *pp, int *indice) {
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				printf("\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC           ESTADO\n");
                 printf("---------------------------------------------------------------------------------------------------------\n");
-                printf("%d.\t",aux+1);
+                printf("%d. ",aux+1);
                 printf("%s", pp[aux].nombre);
                 /* Formatea el nombre para mostrar en tabla */
                 for (j = 0; j < (MAXNOMBRE - strlen(pp[aux].nombre)); j++)
@@ -592,7 +592,7 @@ void modificarPeli(peliculas *pp, int *indice) {
             printf("---------------------------------------------------------------------------------------------------------\n");
             printf("\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC           ESTADO\n");
             printf("---------------------------------------------------------------------------------------------------------\n");
-            printf("%d.\t",aux+1);
+            printf("%d. ",aux+1);
 			printf("%s", pp[aux].nombre);
             /* Formatea el nombre para mostrar en tabla */
             for (j = 0; j < (MAXNOMBRE - strlen(pp[aux].nombre)); j++)
@@ -631,10 +631,10 @@ void listado(peliculas *pp, int *indice) {
 		inicio();
 		printf("\ninicio >> gestion de peliculas >> listado\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
-        printf("\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC           ESTADO\n");
+        printf("\nNOMBRE PELICULA                                          AÑO    GENERO    MCE    FAC           ESTADO\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		for(i = 0; i < *indice; i++) {
-            printf("%d.\t",i+1);
+            printf("%d. ",i+1);
 			printf("%s", pp[i].nombre);
             /* Formatea el nombre para mostrar en tabla */
             for (j = 0; j < (MAXNOMBRE - strlen(pp[i].nombre)); j++)
@@ -765,10 +765,10 @@ void gestionSalas(salas *ps, int *indice) {
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		for(i = 0; i < 4; i++){
 			printf("\nPELICULAS ASIGNADAS A LA SALA \"%s\" (%d) - GENERO: %c", ps[i].nombreSala, ps[i].asignadas, ps[i].generoSala);
-			printf("\n\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC         ESTADO\n");
+			printf("\n\nNOMBRE PELICULA                                          AÑO    GENERO    MCE    FAC           ESTADO\n");
             printf("---------------------------------------------------------------------------------------------------------\n");
 			for(j = 0; j < ps[i].asignadas; j++) {
-				printf("%d.\t",j+1);
+				printf("%d. ",j+1);
                 printf("%s", ps[i].enCartelera[j].nombre);
                 /* Formatea el nombre para mostrar en tabla */
                 for (h = 0; h < (MAXNOMBRE - strlen(ps[i].enCartelera[j].nombre)); h++)
