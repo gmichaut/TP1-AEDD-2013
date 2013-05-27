@@ -1,10 +1,8 @@
-//
-//  main.c
-//  TP1
-//
-//  Created by Gabriel Michaut on 5/26/13.
-//  Copyright (c) 2013 Gabriel Michaut. All rights reserved.
-//
+/* GRUPO NRO 5
+ INTEGRANTES:
+ GABRIEL MICHAUT
+ gmichaut@gmail.com
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
