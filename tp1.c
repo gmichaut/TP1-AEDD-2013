@@ -348,23 +348,35 @@ void bajaPeli(peliculas *pp, int *indice) {
 		scanf("%s", nombrePeli);
 		i = j = 0;
 		printf("\n");
-        printf("\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC           ESTADO\n");
-        printf("---------------------------------------------------------------------------------------------------------\n");
+        printf("\n    NOMBRE PELICULA                                      AÑO   GENERO    MCE        FAC        ESTADO\n");
+		printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
         while(i < *indice){
 			ptr = strstr(pp[i].nombre, nombrePeli);
 			/* Verifica que la busqueda haya arrojado resultados */
 			if(ptr != NULL) {
-				printf("%d. ",j+1);
+				if (j < 9)
+                    printf("%d.  ",j+1);
+                else
+                    printf("%d. ",j+1);
                 printf("%s", pp[i].nombre);
                 /* Formatea el nombre para mostrar en tabla */
                 for (h = 0; h < (MAXNOMBRE - strlen(pp[i].nombre)); h++)
                     printf(" ");
-                printf(" || %d ", pp[i].anyo);
-                printf("||   %c   ", pp[i].genero);
-                printf("|| %d ", pp[i].mce);
-                printf("|| %s ", pp[i].fac);
-                printf("|| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
-                printf("---------------------------------------------------------------------------------------------------------\n");
+                printf(" | %d ", pp[i].anyo);
+                printf("|   %c   ", pp[i].genero);
+                if (pp[i].mce < 100)
+                    printf("|  %d   ", pp[i].mce);
+                else if (pp[i].mce < 1000)
+                    printf("|  %d  ", pp[i].mce);
+                else
+                    printf("|  %d ", pp[i].mce);
+                
+                if(strlen(pp[i].fac) == 0)
+                    printf("|            ");
+                else
+                    printf("| %s ", pp[i].fac);
+                printf("| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : " VIGENTE"));
+                printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 				pos[j] = i;
 				j++;
 				bandera = 0;
@@ -401,19 +413,31 @@ void bajaPeli(peliculas *pp, int *indice) {
 						inicio();
 						printf("\nSE HA DADO DE BAJA LA SIGUIENTE PELICULA:\n");
 						printf("---------------------------------------------------------------------------------------------------------\n");
-						printf("\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC           ESTADO\n");
-                        printf("---------------------------------------------------------------------------------------------------------\n");
-                        printf("%d. ",aux+1);
+						printf("\n    NOMBRE PELICULA                                      AÑO   GENERO    MCE        FAC        ESTADO\n");
+                        printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
+                        if (aux < 9)
+                            printf("%d.  ",aux+1);
+                        else
+                            printf("%d. ",aux+1);
                         printf("%s", pp[aux].nombre);
                         /* Formatea el nombre para mostrar en tabla */
                         for (j = 0; j < (MAXNOMBRE - strlen(pp[aux].nombre)); j++)
                             printf(" ");
-                        printf(" || %d ", pp[aux].anyo);
-                        printf("||   %c   ", pp[aux].genero);
-                        printf("|| %d ", pp[aux].mce);
-                        printf("|| %s ", pp[aux].fac);
-                        printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
-                        printf("---------------------------------------------------------------------------------------------------------\n");
+                        printf(" | %d ", pp[aux].anyo);
+                        printf("|   %c   ", pp[aux].genero);
+                        if (pp[aux].mce < 100)
+                            printf("|  %d   ", pp[aux].mce);
+                        else if (pp[aux].mce < 1000)
+                            printf("|  %d  ", pp[aux].mce);
+                        else
+                            printf("|  %d ", pp[aux].mce);
+                        
+                        if(strlen(pp[aux].fac) == 0)
+                            printf("|            ");
+                        else
+                            printf("| %s ", pp[aux].fac);
+                        printf("| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
+                        printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 						printf("\nPRESIONE ENTER PARA CONTINUAR..");
 						getchar();
 						break;
@@ -440,7 +464,7 @@ void bajaPeli(peliculas *pp, int *indice) {
 }
 
 void modificarPeli(peliculas *pp, int *indice) {
-	int i, j, num, aux, bandera = -1, opcion, n_anyo, n_mce, pos[MAXPELI];
+	int i, j, k, num, aux, bandera = -1, opcion, n_anyo, n_mce, pos[MAXPELI];
 	char n_genero, nombrePeli[MAXNOMBRE];
 	char *ptr;
 	
@@ -464,25 +488,37 @@ void modificarPeli(peliculas *pp, int *indice) {
 		
 		scanf("%s", nombrePeli);
 		printf("\n");
-        printf("\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC           ESTADO\n");
-        printf("---------------------------------------------------------------------------------------------------------\n");
+        printf("\n    NOMBRE PELICULA                                      AÑO   GENERO    MCE        FAC        ESTADO\n");
+		printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 		i = j = 0;
 		while(i < *indice){
 			/* Compara la subcadena con el nombre de pelicula */
 			ptr = strstr(pp[i].nombre, nombrePeli);
 			/* Verifica que la busqueda haya arrojado resultados */
 			if(ptr != NULL) {
-				printf("%d. ",j+1);
+				if (j < 9)
+                    printf("%d.  ",j+1);
+                else
+                    printf("%d. ",j+1);
                 printf("%s", pp[i].nombre);
                 /* Formatea el nombre para mostrar en tabla */
-                for (j = 0; j < (MAXNOMBRE - strlen(pp[i].nombre)); j++)
+                for (k = 0; k < (MAXNOMBRE - strlen(pp[i].nombre)); k++)
                     printf(" ");
-                printf(" || %d ", pp[i].anyo);
-                printf("||   %c   ", pp[i].genero);
-                printf("|| %d ", pp[i].mce);
-                printf("|| %s ", pp[i].fac);
-                printf("|| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
-                printf("---------------------------------------------------------------------------------------------------------\n");
+                printf(" | %d ", pp[i].anyo);
+                printf("|   %c   ", pp[i].genero);
+                if (pp[i].mce < 100)
+                    printf("|  %d   ", pp[i].mce);
+                else if (pp[i].mce < 1000)
+                    printf("|  %d  ", pp[i].mce);
+                else
+                    printf("|  %d ", pp[i].mce);
+                
+                if(strlen(pp[i].fac) == 0)
+                    printf("|            ");
+                else
+                    printf("| %s ", pp[i].fac);
+                printf("| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : " VIGENTE"));
+                printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 				pos[j] = i;
 				j++;
 				bandera = 0;
@@ -514,19 +550,31 @@ void modificarPeli(peliculas *pp, int *indice) {
 				inicio();
 				printf("\nPELICULA A MODIFICAR:\n");
 				printf("---------------------------------------------------------------------------------------------------------\n");
-				printf("\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC           ESTADO\n");
-                printf("---------------------------------------------------------------------------------------------------------\n");
-                printf("%d. ",aux+1);
+				printf("\n    NOMBRE PELICULA                                      AÑO   GENERO    MCE        FAC        ESTADO\n");
+                printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
+                if (aux < 9)
+                    printf("%d.  ",aux+1);
+                else
+                    printf("%d. ",aux+1);
                 printf("%s", pp[aux].nombre);
                 /* Formatea el nombre para mostrar en tabla */
-                for (j = 0; j < (MAXNOMBRE - strlen(pp[aux].nombre)); j++)
+                for (k = 0; k < (MAXNOMBRE - strlen(pp[aux].nombre)); k++)
                     printf(" ");
-                printf(" || %d ", pp[aux].anyo);
-                printf("||   %c   ", pp[aux].genero);
-                printf("|| %d ", pp[aux].mce);
-                printf("|| %s ", pp[aux].fac);
-                printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
-                printf("---------------------------------------------------------------------------------------------------------\n");
+                printf(" | %d ", pp[aux].anyo);
+                printf("|   %c   ", pp[aux].genero);
+                if (pp[aux].mce < 100)
+                    printf("|  %d   ", pp[aux].mce);
+                else if (pp[aux].mce < 1000)
+                    printf("|  %d  ", pp[aux].mce);
+                else
+                    printf("|  %d ", pp[aux].mce);
+                
+                if(strlen(pp[aux].fac) == 0)
+                    printf("|            ");
+                else
+                    printf("| %s ", pp[aux].fac);
+                printf("| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : " VIGENTE"));
+                printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 				printf("\n\nSELECCIONE LA MODIFICACION A REALIZAR:\n");
 				printf("---------------------------------------------------------------------------------------------------------\n");
 				printf("                      1. Año | 2. Género | 3. MCE | 4. Volvel al menú anterior\n");
@@ -590,19 +638,31 @@ void modificarPeli(peliculas *pp, int *indice) {
             inicio();
             printf("\nSE HA MODIFICADO LA SIGUIENTE PELICULA:\n");
             printf("---------------------------------------------------------------------------------------------------------\n");
-            printf("\nNOMBRE PELICULA                                           AÑO    GENERO    MCE    FAC           ESTADO\n");
-            printf("---------------------------------------------------------------------------------------------------------\n");
-            printf("%d. ",aux+1);
+            printf("\nNOMBRE PELICULA                                          AÑO   GENERO    MCE        FAC           ESTADO\n");
+            printf("--+----------------------------------------------------+------+-------+-------+-------------+---------------\n");
+            if (aux < 9)
+                printf("%d.  ",aux+1);
+            else
+                printf("%d. ",aux+1);
 			printf("%s", pp[aux].nombre);
             /* Formatea el nombre para mostrar en tabla */
             for (j = 0; j < (MAXNOMBRE - strlen(pp[aux].nombre)); j++)
                 printf(" ");
-            printf(" || %d ", pp[aux].anyo);
-            printf("||   %c   ", pp[aux].genero);
-            printf("|| %d ", pp[aux].mce);
-            printf("|| %s ", pp[aux].fac);
-            printf("|| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
-            printf("---------------------------------------------------------------------------------------------------------\n");
+            printf(" | %d ", pp[aux].anyo);
+            printf("|   %c   ", pp[aux].genero);
+            if (pp[aux].mce < 100)
+                printf("|  %d   ", pp[aux].mce);
+            else if (pp[aux].mce < 1000)
+                printf("|  %d  ", pp[aux].mce);
+            else
+                printf("|  %d ", pp[aux].mce);
+            
+            if(strlen(pp[aux].fac) == 0)
+                printf("|            ");
+            else
+                printf("| %s ", pp[aux].fac);
+            printf("| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
+            printf("--+----------------------------------------------------+------+-------+-------+-------------+---------------\n");
             printf("\nPRESIONE ENTER PARA CONTINUAR..");
             getchar();
 		}
@@ -631,20 +691,33 @@ void listado(peliculas *pp, int *indice) {
 		inicio();
 		printf("\ninicio >> gestion de peliculas >> listado\n");
 		printf("---------------------------------------------------------------------------------------------------------\n");
-        printf("\nNOMBRE PELICULA                                          AÑO    GENERO    MCE    FAC           ESTADO\n");
-		printf("---------------------------------------------------------------------------------------------------------\n");
+        printf("\n    NOMBRE PELICULA                                      AÑO   GENERO    MCE        FAC        ESTADO\n");
+		printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 		for(i = 0; i < *indice; i++) {
-            printf("%d. ",i+1);
+            if (i < 9)
+                printf("%d.  ",i+1);
+            else
+                printf("%d. ",i+1);
 			printf("%s", pp[i].nombre);
             /* Formatea el nombre para mostrar en tabla */
             for (j = 0; j < (MAXNOMBRE - strlen(pp[i].nombre)); j++)
                 printf(" ");
-            printf(" || %d ", pp[i].anyo);
-            printf("||   %c   ", pp[i].genero);
-            printf("|| %d ", pp[i].mce);
-            printf("|| %s ", pp[i].fac);
-            printf("|| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
-            printf("---------------------------------------------------------------------------------------------------------\n");
+            printf(" | %d ", pp[i].anyo);
+            printf("|   %c   ", pp[i].genero);
+            
+            if (pp[i].mce < 100)
+                printf("|  %d   ", pp[i].mce);
+            else if (pp[i].mce < 1000)
+                printf("|  %d  ", pp[i].mce);
+            else
+                printf("|  %d ", pp[i].mce);
+            
+            if(strlen(pp[i].fac) == 0)
+                printf("|            ");
+            else
+                printf("| %s ", pp[i].fac);
+            printf("| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : "  VIGENTE"));
+            printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 		}
 		printf("\n");
 	}
@@ -765,20 +838,32 @@ void gestionSalas(salas *ps, int *indice) {
 		printf("---------------------------------------------------------------------------------------------------------\n");
 		for(i = 0; i < 4; i++){
 			printf("\nPELICULAS ASIGNADAS A LA SALA \"%s\" (%d) - GENERO: %c", ps[i].nombreSala, ps[i].asignadas, ps[i].generoSala);
-			printf("\n\nNOMBRE PELICULA                                          AÑO    GENERO    MCE    FAC           ESTADO\n");
-            printf("---------------------------------------------------------------------------------------------------------\n");
+			printf("\n\n    NOMBRE PELICULA                                      AÑO   GENERO    MCE        FAC        ESTADO\n");
+            printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 			for(j = 0; j < ps[i].asignadas; j++) {
-				printf("%d. ",j+1);
+				if (j < 9)
+                    printf("%d.  ",j+1);
+                else
+                    printf("%d. ",j+1);
                 printf("%s", ps[i].enCartelera[j].nombre);
                 /* Formatea el nombre para mostrar en tabla */
                 for (h = 0; h < (MAXNOMBRE - strlen(ps[i].enCartelera[j].nombre)); h++)
                     printf(" ");
-                printf(" || %d ", ps[i].enCartelera[j].anyo);
-                printf("||   %c   ", ps[i].enCartelera[j].genero);
-                printf("|| %d ", ps[i].enCartelera[j].mce);
-                printf("|| %s ", ps[i].enCartelera[j].fac);
-                printf("|| %s\n", ((ps[i].enCartelera[j].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
-                printf("---------------------------------------------------------------------------------------------------------\n");
+                printf(" | %d ", ps[i].enCartelera[j].anyo);
+                printf("|   %c   ", ps[i].enCartelera[j].genero);
+                if (ps[i].enCartelera[j].mce < 100)
+                    printf("|  %d   ", ps[i].enCartelera[j].mce);
+                else if (ps[i].enCartelera[j].mce < 1000)
+                    printf("|  %d  ", ps[i].enCartelera[j].mce);
+                else
+                    printf("|  %d ", ps[i].enCartelera[j].mce);
+                
+                if(strlen(ps[i].enCartelera[j].fac) == 0)
+                    printf("|            ");
+                else
+                    printf("| %s ", ps[i].enCartelera[j].fac);
+                printf("| %s\n", ((ps[i].enCartelera[j].marcaBaja)?"DADA DE BAJA" : " VIGENTE"));
+                printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
             }
 			printf("\n\n");
         }
