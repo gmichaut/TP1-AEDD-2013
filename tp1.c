@@ -436,7 +436,7 @@ void bajaPeli(peliculas *pp, int *indice) {
                             printf("|            ");
                         else
                             printf("| %s ", pp[aux].fac);
-                        printf("| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
+                        printf("| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : " VIGENTE"));
                         printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 						printf("\nPRESIONE ENTER PARA CONTINUAR..");
 						getchar();
@@ -638,8 +638,8 @@ void modificarPeli(peliculas *pp, int *indice) {
             inicio();
             printf("\nSE HA MODIFICADO LA SIGUIENTE PELICULA:\n");
             printf("---------------------------------------------------------------------------------------------------------\n");
-            printf("\nNOMBRE PELICULA                                          AÑO   GENERO    MCE        FAC           ESTADO\n");
-            printf("--+----------------------------------------------------+------+-------+-------+-------------+---------------\n");
+            printf("\n    NOMBRE PELICULA                                      AÑO   GENERO    MCE        FAC        ESTADO\n");
+            printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
             if (aux < 9)
                 printf("%d.  ",aux+1);
             else
@@ -661,8 +661,8 @@ void modificarPeli(peliculas *pp, int *indice) {
                 printf("|            ");
             else
                 printf("| %s ", pp[aux].fac);
-            printf("| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : "VIGENTE"));
-            printf("--+----------------------------------------------------+------+-------+-------+-------------+---------------\n");
+            printf("| %s\n", ((pp[aux].marcaBaja)?"DADA DE BAJA" : " VIGENTE"));
+            printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
             printf("\nPRESIONE ENTER PARA CONTINUAR..");
             getchar();
 		}
@@ -716,7 +716,7 @@ void listado(peliculas *pp, int *indice) {
                 printf("|            ");
             else
                 printf("| %s ", pp[i].fac);
-            printf("| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : "  VIGENTE"));
+            printf("| %s\n", ((pp[i].marcaBaja)?"DADA DE BAJA" : " VIGENTE"));
             printf("--+----------------------------------------------------+------+-------+-------+------------+-------------\n");
 		}
 		printf("\n");
