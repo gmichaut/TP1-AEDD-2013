@@ -296,7 +296,6 @@ void altaManual(peliculas *pp, int *indice) {
             /* Ordena las peliculas en orden descendente a medida que se van cargando */
             for (h = 0; h < *indice; h++){
                 for (k = h + 1; k < *indice; k++) {
-                    /* Ordena las peliculas descendentemente */
                     if (strcmp(pp[h].nombre, pp[k].nombre) > 0) {
                         temp = pp[h];
                         pp[h] = pp[k];
@@ -521,7 +520,7 @@ void bajaPeli(peliculas *pp, int *indice) {
                                 printf("|  COMEDIA ");
                                 break;
                             case 'D':
-                                printf("|  DRAMA  ");
+                                printf("|  DRAMA   ");
                                 break;
                             case 'S':
                                 printf("| SUSPENSO ");
@@ -940,13 +939,30 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 			inicio();
 			printf("\ninicio >> renovar cartelera\n");
 			printf("------------------------------------------------------------------------------------------------------------------------\n");
-			printf("\nSELECCIONE EL GENERO PARA LA SALA \"%s\":\t (A)ccion - (C)omedia - (D)rama - (S)uspenso - (T)error\n\n", ps[i].nombreSala);
+			printf("\nSELECCIONE EL GENERO PARA LA SALA \"%s\":\t Accion - Comedia - Drama - Suspenso - Terror\n\n", ps[i].nombreSala);
 			printf("------------------------------------------------------------------------------------------------------------------------\n");
 			printf("GENEROS DISPONIBLES: ");
 			
 			/* Muestra los generos disponibles */
-			for(j = 0; j <= indiceGen; j++)
-				printf("| %d. %c ", j+1, gen[j]);
+			for(j = 0; j <= indiceGen; j++) {
+                switch (gen[j]) {
+                    case 'A':
+                        printf("| %d. ACCION ",j+1);
+                        break;
+                    case 'C':
+                        printf("| %d. COMEDIA ",j+1);
+                        break;
+                    case 'D':
+                        printf("| %d. DRAMA ",j+1);
+                        break;
+                    case 'S':
+                        printf("| %d. SUSPENSO ",j+1);
+                        break;
+                    case 'T':
+                        printf("| %d. TERROR ",j+1);
+                        break;
+                }
+            }
 			
 			/* Verifica que el numero ingresado este dentro del rango */
 			do {
@@ -1099,19 +1115,16 @@ void autenticar(usuario pu[]) {
 		
 		for(i= 0; i < 10; i++) {
 			auth = strcmp(pu[i].nombreUsuario, usuario);
-			
-            /* Valida el usuario */
+			/* Valida el usuario */
 			if(auth == 0) {
 				pos = i;
 				userOK = 1;
 			}
 		}
 		
-		fflush(stdin);
 		printf("                                                   CONTRASENIA: ");
-		
-        /* Enmascara la contraseña */
-        while ((ch = getch()) != EOF && ch != '\n' && ch != '\r' && j < sizeof(pword) - 1) {
+        fflush(stdout);
+		while ((ch = getch()) != EOF && ch != '\n' && ch != '\r' && j < sizeof(pword) - 1) {
             if (ch == '\b' && j > 0)
             {
                 printf("\b \b");
@@ -1125,6 +1138,9 @@ void autenticar(usuario pu[]) {
                 pword[j++] = (char)ch;
             }
         }
+        
+
+		
 		/* Verifica que el usuario y contraseña coincidan */
 		if((strcmp(pu[pos].password,pword) == 0) && userOK == 1)
 			auth = 1;
