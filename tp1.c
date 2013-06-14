@@ -205,7 +205,9 @@ void gestionPeliculas(peliculas *pp, int *indice) {
 }
 
 void altaManual(peliculas *pp, int *indice) {
-	char opcion, n_genero, nombrePeli[MAXNOMBRE];
+	char opcion, n_genero, nombrePeli[MAXNOMBRE], buffer[256], bufferexp[256];
+    int anyop, cantexp, h, k;
+    peliculas temp;
 	
 	/* Verifica si se alcanzo el limite de peliculas */
 	if(*indice == MAXPELI){
@@ -232,8 +234,12 @@ void altaManual(peliculas *pp, int *indice) {
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			do {
 				printf("INGRESE EL AÑO DE ESTRENO: ");
-				scanf("%d",&pp[*indice].anyo);
-			} while((pp[*indice].anyo > ANYOACTUAL) || (pp[*indice].anyo < 1900));
+				scanf("%s",buffer);
+                anyop = atoi(buffer);
+                fflush(stdin);
+			} while((anyop > ANYOACTUAL) || (anyop < 1900));
+            pp[*indice].anyo = anyop;
+            
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			do {
 				fflush(stdin);
@@ -268,9 +274,12 @@ void altaManual(peliculas *pp, int *indice) {
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			do {
 				printf("INGRESE LA CANTIDAD EXPECTADORES QUE SE ESPERAN: ");
-				getchar();
-				scanf("%d",&pp[*indice].mce);
-			} while((pp[*indice].mce > MAXSALA) || (pp[*indice].mce < 0));
+				scanf("%s",bufferexp);
+                cantexp = atoi(bufferexp);
+                fflush(stdin);
+			} while((cantexp > MAXSALA) || (cantexp < 1));
+            pp[*indice].mce = cantexp;
+            
 			printf("---------------------------------------------------------------------------------------------------------\n");
 			
 			/* Pelicula se carga con estado "Vigente" */
@@ -279,6 +288,19 @@ void altaManual(peliculas *pp, int *indice) {
 			/* Incrementa en 1 indice de peliculas cargadas */
 			*indice += 1;
 			
+            /* Ordena las peliculas en orden ascendente a medida que se van cargando */
+            for (h = 0; h < *indice; h++){
+                for (k = h + 1; k < *indice; k++) {
+                    /* Ordena las peliculas ascendentemente */
+                    if (strcmp(pp[h].nombre, pp[k].nombre) > 0) {
+                        temp = pp[h];
+                        pp[h] = pp[k];
+                        pp[k] = temp;
+                    }
+                    
+                }
+            }
+            
 			system("clear");
 			inicio();
 			printf("\ninicio >> gestion de peliculas >> alta manual\n");
@@ -295,8 +317,9 @@ void altaManual(peliculas *pp, int *indice) {
 }
 
 void altaMasiva(peliculas *pp, int *indice) {
-	int i, j;
+	int i, j, k;
 	char ch, gen[] = {'A','C','D','S','T'};
+    peliculas temp;
 	
 	randomize;
 	
@@ -335,6 +358,18 @@ void altaMasiva(peliculas *pp, int *indice) {
 			/* incremento el indice de peliculas */
 			*indice += 1;
 		}
+        /* Ordena las peliculas ascendentemente */
+        for (i = 0; i < *indice; i++){
+            for (k = i + 1; k < *indice; k++) {
+                /* Ordena las peliculas ascendentemente */
+                if (strcmp(pp[i].nombre, pp[k].nombre) > 0) {
+                    temp = pp[i];
+                    pp[i] = pp[k];
+                    pp[k] = temp;
+                }
+                
+            }
+        }
         
 		system("clear");
 		inicio();
@@ -749,7 +784,8 @@ void listado(peliculas *pp, int *indice) {
                 printf("%d.  ",i+1);
             else
                 printf("%d. ",i+1);
-			printf("%s", pp[i].nombre);
+            printf("%s", pp[i].nombre);
+            
             /* Formatea el nombre para mostrar en tabla */
             for (j = 0; j < (MAXNOMBRE - strlen(pp[i].nombre)); j++)
                 printf(" ");
@@ -855,7 +891,8 @@ void renovarCartelera(salas *ps, peliculas *pp, int *indice) {
 					ps[i].enCartelera[n].anyo = pp[h].anyo;
                     ps[i].enCartelera[n].mce = pp[h].mce;
 					ps[i].enCartelera[n].genero = pp[h].genero;
-					ps[i].asignadas = n+1;
+					/* Contador de peliculas asignadas a la correspondiente sala */
+                    ps[i].asignadas = n+1;
 					n++;
 				}
 			}
@@ -900,6 +937,7 @@ void gestionSalas(salas *ps, int *indice) {
                 else
                     printf("%d. ",j+1);
                 printf("%s", ps[i].enCartelera[j].nombre);
+                
                 /* Formatea el nombre para mostrar en tabla */
                 for (h = 0; h < (MAXNOMBRE - strlen(ps[i].enCartelera[j].nombre)); h++)
                     printf(" ");
